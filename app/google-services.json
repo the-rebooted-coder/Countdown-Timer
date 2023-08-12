@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "632705449940",
+    "project_id": "anumi-efb8d",
+    "storage_bucket": "anumi-efb8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632705449940:android:2230116fa9b8ca37aba041",
+        "android_client_info": {
+          "package_name": "com.onesilicondiode.anumi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632705449940-p0nvo48sdlsp44ud18ba2md9f1bndn03.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2U3BdMM1bMLpz1atkwmH5FRtXJcMQLqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632705449940-p0nvo48sdlsp44ud18ba2md9f1bndn03.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
