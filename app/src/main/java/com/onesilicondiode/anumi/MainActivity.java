@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (daysRemaining > 1) {
             // Display days remaining if more than 1 day is left
-            countdownTextView.setText(String.format("%d days remaining", daysRemaining));
+            countdownTextView.setText(String.format("%d days left", daysRemaining));
         } else if (daysRemaining == 1) {
             // Display singular text if 1 day is left
-            countdownTextView.setText("1 day remaining");
+            countdownTextView.setText("1 day left");
         } else {
             // Start the countdown timer for less than 24 hours
             new CountDownTimer(timeDifference, 1000) {
