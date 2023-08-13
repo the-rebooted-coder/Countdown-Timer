@@ -2,12 +2,10 @@ package com.onesilicondiode.anumi;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
@@ -259,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("What's New")
                 .setMessage(text+"\nOpen File Manager and Tap 'Anumi-Update to Begin!")
+                .setIcon(R.drawable.update_icon)
                 .setPositiveButton("OPEN", (dialog, which) -> {
                     long[] pattern = {0, 100, 100, 100, 200, 100};
                     if (vibrator != null && vibrator.hasVibrator()) {
