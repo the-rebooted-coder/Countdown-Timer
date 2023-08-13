@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
@@ -27,11 +26,11 @@ public class CountdownWidget {
 
         // Update the widget with the new countdown
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.countdown_widget_layout);
-        remoteViews.setTextViewText(R.id.widget_countdown_text, "Days remaining: " + daysRemaining);
+        remoteViews.setTextViewText(R.id.widget_countdown_text, "Only " + daysRemaining + " days left!");
 
         // Create an explicit intent for the MainActivity
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.widget_layout, pendingIntent);
 
         // Update the widget

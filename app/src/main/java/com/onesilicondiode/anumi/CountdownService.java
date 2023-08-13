@@ -1,5 +1,6 @@
 package com.onesilicondiode.anumi;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -56,6 +57,7 @@ public class CountdownService  extends Service {
         scheduleMidnightUpdate();
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     private void scheduleMidnightUpdate() {
         Intent updateIntent = new Intent(this, MidnightUpdateReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_MUTABLE);
@@ -87,11 +89,11 @@ public class CountdownService  extends Service {
     }
 
     private void updateNotification(int daysLeft) {
-        String contentText = (daysLeft > 0) ?  daysLeft + " Days Remaining Bhumi": "Pack your bags!";
+        String contentText = (daysLeft > 0) ?  daysLeft + " days remaining Bhumi": "Pack your bags!";
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Homecoming Time")
+                .setContentTitle("Homecoming")
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_logo)
                 .setColor(ContextCompat.getColor(this, R.color.pink))
