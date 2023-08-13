@@ -15,6 +15,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +71,26 @@ public class MainActivity extends AppCompatActivity {
                 if (isNetworkAvailable()) {
                     if (hasWriteExternalStoragePermission()) {
                         performReadTextFile();
+                        // Create the fade-out animation
+                        Animation animation = new AlphaAnimation(1f, 0f);
+                        animation.setDuration(500); // Duration in milliseconds
+                        animation.setFillAfter(true);
+                        // Set an animation listener to make the button invisible when the animation is done
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {}
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {}
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                updateApp.setVisibility(Button.INVISIBLE);
+                            }
+                        });
+
+                        // Start the animation on the button
+                        updateApp.startAnimation(animation);
                     } else {
                         // Permission not granted, request it
                         requestWriteExternalStoragePermission();
