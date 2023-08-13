@@ -2,4 +2,5 @@
     <string name="app_name">Anumi</string>
     <string name="default_notification_channel_id">remote</string>
     <string name="app_update_button">App Update Button</string>
+    <string name="_1_day_left">1 day left</string>
 </resources>

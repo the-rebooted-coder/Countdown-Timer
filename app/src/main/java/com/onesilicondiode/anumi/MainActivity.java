@@ -1,13 +1,17 @@
 package com.onesilicondiode.anumi;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
@@ -15,7 +19,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,13 +40,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
-
+    private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +64,12 @@ public class MainActivity extends AppCompatActivity {
                 // Perform a pop animation when the FAB is clicked
                 handleFabClick(view);
                 if (isNetworkAvailable()) {
-                    performReadTextFile();
+                    if (hasWriteExternalStoragePermission()) {
+                        performReadTextFile();
+                    } else {
+                        // Permission not granted, request it
+                        requestWriteExternalStoragePermission();
+                    }
                 }
                 else {
                     // Show "No internet" message
@@ -78,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             countdownTextView.setText(String.format("%d days left", daysRemaining));
         } else if (daysRemaining == 1) {
             // Display singular text if 1 day is left
-            countdownTextView.setText("1 day left");
+            countdownTextView.setText(R.string._1_day_left);
         } else {
             // Start the countdown timer for less than 24 hours
             new CountDownTimer(timeDifference, 1000) {
@@ -96,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    countdownTextView.setText("Countdown Complete!");
+                    countdownTextView.setText("Homecoming 🏠!");
                 }
             }.start();
         }
@@ -105,6 +120,29 @@ public class MainActivity extends AppCompatActivity {
     private void startCountdownService() {
         Intent serviceIntent = new Intent(this, CountdownService.class);
         startService(serviceIntent);
+    }
+    private boolean hasWriteExternalStoragePermission() {
+        // Check if the app has write external storage permission
+        return ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestWriteExternalStoragePermission() {
+        // Request write external storage permission
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
+            // Check if the permission was granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, perform the operation to read the online text file
+                performReadTextFile();
+            } else {
+                // Permission denied, show a message or take appropriate action
+                Snackbar.make(updateApp, "Permission denied, cannot update 😔", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void handleFabClick(View view) {
@@ -181,15 +219,71 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
-            stringBuilder.append(line).append("\n");
+            stringBuilder.append(line).append("");
         }
         reader.close();
         return stringBuilder.toString();
     }
 
     private void handleReadTextFileResult(String result) {
-        Snackbar snackbar = Snackbar.make(updateApp, result, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+        if (containsNumberGreaterThanZero(result)) {
+            initiateApkDownload();
+        }
+        else {
+            Snackbar snackbar = Snackbar.make(updateApp, "Already on the latest version - duh 🤷‍♂️", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
+    }
+    private void initiateApkDownload() {
+    // Create a download request for the APK file
+    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
+        request.setTitle("App Update");
+        request.setDescription("Downloading app update...");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "app_update.apk");
+
+    // Get the download service and enqueue the download request
+    DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        if (downloadManager != null) {
+            long downloadId = downloadManager.enqueue(request);
+            handleDownloadId(downloadId);
+    }
+}
+    private void handleDownloadId(long downloadId) {
+        // Store the download ID or use it immediately to install the APK
+        // For this example, we'll initiate the installation immediately
+        installDownloadedApk(downloadId);
+    }
+    private void installDownloadedApk(long downloadId) {
+        // Create an intent to handle the installation
+        Intent installIntent = new Intent(Intent.ACTION_VIEW);
+        Uri apkUri = Uri.parse("content://downloads/all_downloads/" + downloadId);
+        installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+        installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // Check if there's a package installer available
+        PackageManager packageManager = getPackageManager();
+        if (installIntent.resolveActivity(packageManager) != null) {
+            // Start the installation process
+            startActivity(installIntent);
+        } else {
+            // Show a message or take appropriate action if the package installer is not available
+            Snackbar.make(updateApp, "Package installer not available. Cannot install APK.", Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean containsNumberGreaterThanZero(String text) {
+        // This method checks if the provided text contains any number greater than 0
+        // You can modify this method based on the structure of your online text file
+        // For this example, we'll check for any numeric value greater than 0
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            int value = Integer.parseInt(matcher.group());
+            if (value > 0) {
+                return true;
+            }
+        }
+        return false;
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
