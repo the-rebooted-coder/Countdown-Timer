@@ -58,7 +58,7 @@ public class CountdownService  extends Service {
 
     private void scheduleMidnightUpdate() {
         Intent updateIntent = new Intent(this, MidnightUpdateReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_MUTABLE);
 
         // Calculate the time until the next midnight
         long currentTimeMillis = System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class CountdownService  extends Service {
     private void updateNotification(int daysLeft) {
         String contentText = (daysLeft > 0) ?  daysLeft + " Days Remaining Bhumi": "Pack your bags!";
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setContentTitle("Homecoming Time")
                 .setContentText(contentText)
