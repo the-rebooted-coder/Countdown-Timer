@@ -11,11 +11,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -143,7 +141,7 @@ public class CountdownService extends Service {
         Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.anumi);
         CharSequence name = "Countdown Channel";
         String description = "Countdown Notification Channel";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        int importance = NotificationManager.IMPORTANCE_HIGH;
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
