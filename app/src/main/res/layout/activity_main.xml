@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backdrop"
+    android:background="@color/white"
     tools:context=".MainActivity">
     <TextView
         android:id="@+id/countdownTextView"
@@ -13,7 +13,6 @@
         android:layout_height="74dp"
         android:fontFamily="@font/mainfont"
         android:textAlignment="textStart"
-        android:text="Check"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,4 +21,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.123"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/updateApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:elevation="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="50dp"
+        android:contentDescription="@string/app_update_button"
+        android:src="@drawable/update_icon" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

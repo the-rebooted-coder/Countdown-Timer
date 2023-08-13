@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Anumi</string>
     <string name="default_notification_channel_id">remote</string>
+    <string name="app_update_button">App Update Button</string>
 </resources>
