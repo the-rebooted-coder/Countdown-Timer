@@ -2,6 +2,7 @@ package com.onesilicondiode.anumi;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -14,12 +15,14 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
+    private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
     private class ReadTextFileTask implements Callable<String> {
 
         @Override
-        public String call() throws Exception {
+        public String call() {
             String result = "";
             HttpURLConnection urlConnection = null;
             try {
@@ -228,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
     private void handleReadTextFileResult(String result) {
         if (containsNumberGreaterThanZero(result)) {
             initiateApkDownload();
+
         }
         else {
             Snackbar snackbar = Snackbar.make(updateApp, "Already on the latest version - duh 🤷‍♂️", Snackbar.LENGTH_SHORT);
@@ -237,37 +243,74 @@ public class MainActivity extends AppCompatActivity {
     private void initiateApkDownload() {
     // Create a download request for the APK file
     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
-        request.setTitle("App Update");
-        request.setDescription("Downloading app update...");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "app_update.apk");
+        request.setTitle("Anumi-Update.apk");
+        request.setDescription("Smile 🙂");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Anumi-Update.apk");
 
-    // Get the download service and enqueue the download request
-    DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        // Get the download service and enqueue the download request
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         if (downloadManager != null) {
-            long downloadId = downloadManager.enqueue(request);
-            handleDownloadId(downloadId);
+            downloadManager.enqueue(request);
+            new FetchTextTask().execute(UPDATE_CHANGELOG);
     }
 }
-    private void handleDownloadId(long downloadId) {
-        // Store the download ID or use it immediately to install the APK
-        // For this example, we'll initiate the installation immediately
-        installDownloadedApk(downloadId);
-    }
-    private void installDownloadedApk(long downloadId) {
-        // Create an intent to handle the installation
-        Intent installIntent = new Intent(Intent.ACTION_VIEW);
-        Uri apkUri = Uri.parse("content://downloads/all_downloads/" + downloadId);
-        installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    private void displayTextInDialog(String text) {
 
-        // Check if there's a package installer available
-        PackageManager packageManager = getPackageManager();
-        if (installIntent.resolveActivity(packageManager) != null) {
-            // Start the installation process
-            startActivity(installIntent);
-        } else {
-            // Show a message or take appropriate action if the package installer is not available
-            Snackbar.make(updateApp, "Package installer not available. Cannot install APK.", Snackbar.LENGTH_LONG).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("What's New")
+                .setMessage(text+"\nOpen File Manager and Tap 'Anumi-Update to Begin!")
+                .setPositiveButton("OPEN", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        long[] pattern = {0, 100, 100, 100, 200, 100};
+                        if (vibrator != null && vibrator.hasVibrator()) {
+                            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+                        }
+                        // Create an intent to open the file manager at the specified path
+                        startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                        finish();
+                    }
+                })
+                .show();
+    }
+    private class FetchTextTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String result = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(urls[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = urlConnection.getInputStream();
+                result = readChangelog(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Display the fetched text in a simple AlertDialog
+            if (result != null && !result.isEmpty()) {
+                displayTextInDialog(result);
+            } else {
+                Toast.makeText(MainActivity.this, "Failed to Fetch What's New", Toast.LENGTH_SHORT).show();
+            }
+        }
+        private String readChangelog(InputStream inputStream) throws IOException {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+            reader.close();
+            return stringBuilder.toString();
         }
     }
 
