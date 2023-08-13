@@ -259,17 +259,14 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("What's New")
                 .setMessage(text+"\nOpen File Manager and Tap 'Anumi-Update to Begin!")
-                .setPositiveButton("OPEN", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        long[] pattern = {0, 100, 100, 100, 200, 100};
-                        if (vibrator != null && vibrator.hasVibrator()) {
-                            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
-                        }
-                        // Create an intent to open the file manager at the specified path
-                        startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-                        finish();
+                .setPositiveButton("OPEN", (dialog, which) -> {
+                    long[] pattern = {0, 100, 100, 100, 200, 100};
+                    if (vibrator != null && vibrator.hasVibrator()) {
+                        vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
                     }
+                    // Create an intent to open the file manager at the specified path
+                    startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                    finish();
                 })
                 .show();
     }
