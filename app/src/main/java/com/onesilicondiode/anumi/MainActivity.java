@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateDevice() {
-        AppUpdater appUpdater = new AppUpdater(this);
-        appUpdater.start();
+        
     }
 }
