@@ -69,28 +69,28 @@ public class MainActivity extends AppCompatActivity {
                 // Perform a pop animation when the FAB is clicked
                 handleFabClick(view);
                 if (isNetworkAvailable()) {
+                    Animation animation = new AlphaAnimation(1f, 0f);
+                    animation.setDuration(500); // Duration in milliseconds
+                    animation.setFillAfter(true);
+                    // Set an animation listener to make the button invisible when the animation is done
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {}
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {}
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            updateApp.setVisibility(Button.INVISIBLE);
+                        }
+                    });
+
+                    // Start the animation on the button
+                    updateApp.startAnimation(animation);
                     if (hasWriteExternalStoragePermission()) {
-                        performReadTextFile();
                         // Create the fade-out animation
-                        Animation animation = new AlphaAnimation(1f, 0f);
-                        animation.setDuration(500); // Duration in milliseconds
-                        animation.setFillAfter(true);
-                        // Set an animation listener to make the button invisible when the animation is done
-                        animation.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {}
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {}
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                updateApp.setVisibility(Button.INVISIBLE);
-                            }
-                        });
-
-                        // Start the animation on the button
-                        updateApp.startAnimation(animation);
+                        performReadTextFile();
                     } else {
                         // Permission not granted, request it
                         requestWriteExternalStoragePermission();
