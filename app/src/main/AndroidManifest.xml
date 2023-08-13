@@ -29,6 +29,18 @@
             android:enabled="true"
             android:exported="true" />
         <receiver
+            android:name=".CountdownWidgetProvider"
+            android:label="Countdown Widget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <receiver
             android:name=".MidnightUpdateReceiver"
             android:enabled="true"
             android:exported="false" />
