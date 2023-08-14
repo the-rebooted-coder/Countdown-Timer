@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
             // Check if the permission was granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, perform the operation to read the online text file
+                updateApp.setVisibility(View.GONE);
                 performReadTextFile();
             } else {
                 // Permission denied, show a message or take appropriate action
