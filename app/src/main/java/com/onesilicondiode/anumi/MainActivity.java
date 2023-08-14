@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String NOTIFICATION_SHOWN_KEY = "notificationShown";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
+    private boolean isSecondaryFabOpen = false;
+    private FloatingActionButton secondaryFab1;
+    private FloatingActionButton secondaryFab2;
     private AlertDialog firstDialog;
 
     @Override
@@ -70,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
+        secondaryFab1 = findViewById(R.id.secondaryFab1);
+        secondaryFab2 = findViewById(R.id.secondaryFab2);
         if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN_KEY, false)) {
             // Show the notification here
             showNotification();
@@ -78,6 +83,48 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean(NOTIFICATION_SHOWN_KEY, true);
             editor.apply();
         }
+        secondaryFab1.setOnClickListener(view -> {
+            // Perform action for secondaryFab1
+            if (isNetworkAvailable()) {
+                Animation animation = new AlphaAnimation(1f, 0f);
+                animation.setDuration(500); // Duration in milliseconds
+                animation.setFillAfter(true);
+                // Set an animation listener to make the button invisible when the animation is done
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        secondaryFab1.setVisibility(View.GONE);
+                        secondaryFab2.setVisibility(View.GONE);
+                    }
+                });
+
+                // Start the animation on the button
+                secondaryFab1.startAnimation(animation);
+                if (hasWriteExternalStoragePermission()) {
+                    // Create the fade-out animation
+                    performReadTextFile();
+                } else {
+                    // Permission not granted, request it
+                    requestWriteExternalStoragePermission();
+                }
+            }
+            else {
+                // Show "No internet" message
+                Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        secondaryFab2.setOnClickListener(view -> {
+            // Perform action for secondaryFab2
+            Toast.makeText(this, "Secondary FAB 2 clicked", Toast.LENGTH_SHORT).show();
+            // Add your desired action here
+        });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
         updateApp = findViewById(R.id.updateApp);
@@ -85,40 +132,7 @@ public class MainActivity extends AppCompatActivity {
         updateApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Perform a pop animation when the FAB is clicked
                 handleFabClick(view);
-                if (isNetworkAvailable()) {
-                    Animation animation = new AlphaAnimation(1f, 0f);
-                    animation.setDuration(500); // Duration in milliseconds
-                    animation.setFillAfter(true);
-                    // Set an animation listener to make the button invisible when the animation is done
-                    animation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {}
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {}
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            updateApp.setVisibility(Button.INVISIBLE);
-                        }
-                    });
-
-                    // Start the animation on the button
-                    updateApp.startAnimation(animation);
-                    if (hasWriteExternalStoragePermission()) {
-                        // Create the fade-out animation
-                        performReadTextFile();
-                    } else {
-                        // Permission not granted, request it
-                        requestWriteExternalStoragePermission();
-                    }
-                }
-                else {
-                    // Show "No internet" message
-                    Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
-                }
             }
         });
 
@@ -158,6 +172,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }.start();
         }
+    }
+    private void toggleSecondaryFabs() {
+        if (isSecondaryFabOpen) {
+            secondaryFab1.setVisibility(View.GONE);
+            secondaryFab2.setVisibility(View.GONE);
+        } else {
+            secondaryFab1.setVisibility(View.VISIBLE);
+            secondaryFab2.setVisibility(View.VISIBLE);
+        }
+        isSecondaryFabOpen = !isSecondaryFabOpen;
     }
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -202,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
             // Check if the permission was granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, perform the operation to read the online text file
-                updateApp.setVisibility(View.GONE);
                 performReadTextFile();
             } else {
                 // Permission denied, show a message or take appropriate action
@@ -234,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                             .start();
                 })
                 .start();
+        toggleSecondaryFabs();
     }
     private void performReadTextFile() {
         // Create a new thread to perform the file reading task
