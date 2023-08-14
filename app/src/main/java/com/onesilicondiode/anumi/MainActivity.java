@@ -3,30 +3,25 @@ package com.onesilicondiode.anumi;
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN_KEY, false)) {
             // Show the notification here
             showNotification();
-
             // Set the flag to indicate that the notification has been shown
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putBoolean(NOTIFICATION_SHOWN_KEY, true);
@@ -132,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         Calendar targetDate = Calendar.getInstance();
         targetDate.set(2023, Calendar.AUGUST, 29, 0, 0, 0);
         Calendar currentDate = Calendar.getInstance();
-
         long timeDifference = targetDate.getTimeInMillis() - currentDate.getTimeInMillis();
 
         // Calculate days remaining
@@ -399,7 +392,6 @@ public class MainActivity extends AppCompatActivity {
             return stringBuilder.toString();
         }
     }
-
     private boolean containsNumberGreaterThanZero(String text) {
         // This method checks if the provided text contains any number greater than 0
         // You can modify this method based on the structure of your online text file
