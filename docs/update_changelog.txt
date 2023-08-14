@@ -1,1 +1,2 @@
-This version contains bug fixes and stability improvements.
+1. Adds a Splash Screen on App Launch
+2. More coming soon!
