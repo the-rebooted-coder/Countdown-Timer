@@ -46,12 +46,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/pinTextInputLayout"
         android:layout_centerHorizontal="true"
-        android:text="UNLOCK APP"
+        android:text="@string/unlock_app"
         android:onClick="unlockApp"/>
     <ImageView
+        android:id="@+id/imageViewPop"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/padlock"
+        android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/submitPassword"
         />
