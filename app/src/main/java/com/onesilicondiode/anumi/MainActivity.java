@@ -5,9 +5,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
@@ -18,11 +20,13 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String NOTIFICATION_SHOWN_KEY = "notificationShown";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
+    private AlertDialog firstDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,22 +323,42 @@ public class MainActivity extends AppCompatActivity {
     }
 }
     private void displayTextInDialog(String text) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("What's New")
-                .setMessage(text+"\nOpen File Manager and Tap 'Anumi-Update to Begin!")
+        builder.setTitle("What's New in Anumi")
+                .setMessage(text + "\nTap 'BEGIN' to start update")
                 .setIcon(R.drawable.update_icon)
-                .setPositiveButton("OPEN", (dialog, which) -> {
-                    long[] pattern = {0, 100, 100, 100, 200, 100};
-                    if (vibrator != null && vibrator.hasVibrator()) {
-                        vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+                .setPositiveButton("BEGIN", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Save the reference to the first dialog and dismiss it
+                        long[] pattern = {0, 100, 100, 100, 200, 100};
+                        if (vibrator != null && vibrator.hasVibrator()) {
+                            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+                        }
+                        firstDialog.dismiss();
+                        // Show the second dialog
+                        showSecondDialog();
                     }
-                    // Create an intent to open the file manager at the specified path
-                    startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-                    finish();
                 })
-                .show();
+                .setCancelable(false);
+        // Save the first dialog instance
+        firstDialog = builder.create();
+        firstDialog.show();
     }
+    private void showSecondDialog() {
+        long[] pattern = {0, 100, 100, 100, 200, 100};
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+        }
+            AlertDialog.Builder secondD = new AlertDialog.Builder(this);
+            secondD.setTitle("Here's how to update")
+                    .setMessage("Simply open your phone's 'File Manager' go to 'Downloads' folder, install Anumi-Update!\n\nYou're Done!🥂")
+                    .setIcon(R.drawable.how_to_update)
+                    .setPositiveButton("OKAY!", (dialog, which) -> {
+                    })
+                    .show();
+        }
+
     private class FetchTextTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
