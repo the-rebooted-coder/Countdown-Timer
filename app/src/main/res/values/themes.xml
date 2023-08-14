@@ -3,7 +3,10 @@
     <style name="Base.Theme.Anumi" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fontFamily">@font/psb</item>
     </style>
 
-    <style name="Theme.Anumi" parent="Base.Theme.Anumi" />
+    <style name="Theme.Anumi" parent="Base.Theme.Anumi">
+        <item name="android:fontFamily">@font/psb</item>
+    </style>
 </resources>
