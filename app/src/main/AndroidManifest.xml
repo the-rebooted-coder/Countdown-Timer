@@ -26,17 +26,23 @@
         android:theme="@style/Theme.Anumi"
         tools:targetApi="31">
         <activity
-            android:name=".LockScreen"
+            android:name=".LaunchScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LockScreen"
+            android:exported="true">
+        </activity>
+
         <service
             android:name=".CountdownService"
             android:enabled="true"
             android:exported="true" />
+
         <receiver
             android:name=".CountdownWidgetProvider"
             android:exported="true"
@@ -57,8 +63,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"/>
     </application>
 
 </manifest>
