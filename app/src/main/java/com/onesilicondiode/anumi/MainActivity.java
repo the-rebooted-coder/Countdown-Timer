@@ -1,13 +1,18 @@
 package com.onesilicondiode.anumi;
 
 import android.app.DownloadManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -25,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,11 +60,25 @@ public class MainActivity extends AppCompatActivity {
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String NOTIFICATION_SHOWN_KEY = "notificationShown";
+    private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
+    private static final int NOTIFICATION_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
+        if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN_KEY, false)) {
+            // Show the notification here
+            showNotification();
+
+            // Set the flag to indicate that the notification has been shown
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putBoolean(NOTIFICATION_SHOWN_KEY, true);
+            editor.apply();
+        }
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
         updateApp = findViewById(R.id.updateApp);
@@ -141,7 +161,29 @@ public class MainActivity extends AppCompatActivity {
             }.start();
         }
     }
+    private void showNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // Create a notification channel for Android Oreo and above
+        NotificationChannel channel = new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                "Widget Info",
+                NotificationManager.IMPORTANCE_LOW
+        );
+        notificationManager.createNotificationChannel(channel);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.home)
+                .setContentTitle("Hey Bhumi 👋")
+                .setContentText("Add the widget by touching and holding homescreen, then tap widgets")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .setBigContentTitle("Hey Bhumi 👋, see how many days left, on your screen!")
+                        .bigText("Just touch and hold on screen, then tap widgets"))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(false);
+
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+    }
     private void startCountdownService() {
         Intent serviceIntent = new Intent(this, CountdownService.class);
         startService(serviceIntent);
