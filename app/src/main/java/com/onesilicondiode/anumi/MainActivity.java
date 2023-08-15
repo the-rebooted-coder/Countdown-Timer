@@ -175,9 +175,17 @@ public class MainActivity extends AppCompatActivity {
     }
     private void toggleSecondaryFabs() {
         if (isSecondaryFabOpen) {
+            updateApp.animate()
+                    .rotation(0)
+                    .setInterpolator(new AccelerateInterpolator())
+                    .start();
             secondaryFab1.setVisibility(View.GONE);
             secondaryFab2.setVisibility(View.GONE);
         } else {
+            updateApp.animate()
+                    .rotation(180)
+                    .setInterpolator(new AccelerateInterpolator())
+                    .start();
             secondaryFab1.setVisibility(View.VISIBLE);
             secondaryFab2.setVisibility(View.VISIBLE);
         }
