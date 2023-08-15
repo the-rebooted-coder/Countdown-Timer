@@ -1,2 +1,2 @@
 1. Adds a Splash Screen on App Launch
-2. More coming soon!
+2. Update Button Shifted in a better Place
