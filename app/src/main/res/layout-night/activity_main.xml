@@ -5,63 +5,62 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_dark_background"
+    android:background="@drawable/main_activity_dm"
     tools:context=".MainActivity">
+
     <TextView
         android:id="@+id/countdownTextView"
-        android:layout_width="274dp"
-        android:layout_height="74dp"
-        android:fontFamily="@font/mainfont"
-        android:textAlignment="textStart"
-        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/psb"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/updateApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:elevation="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="50dp"
+        android:clickable="true"
         android:contentDescription="@string/app_update_button"
-        app:maxImageSize="35dp"
-        android:src="@drawable/owl" />
+        android:elevation="30dp"
+        android:src="@drawable/owl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/secondaryFab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/app_update_button_fab"
-        app:maxImageSize="35dp"
-        android:src="@drawable/update_icon"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="130dp"
-        android:visibility="gone" />
+        android:clickable="true"
+        android:contentDescription="@string/app_update_button_fab"
+        android:elevation="6dp"
+        android:src="@drawable/update_icon"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/secondaryFab2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:elevation="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/app_appearance_fab"
-        app:maxImageSize="35dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="210dp"
+        android:clickable="true"
+        android:contentDescription="@string/app_appearance_fab"
+        android:elevation="6dp"
         android:src="@drawable/light_mode"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
