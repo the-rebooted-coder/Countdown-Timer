@@ -1,14 +1,13 @@
 package com.onesilicondiode.anumi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 @SuppressLint("CustomSplashScreen")
 public class LaunchScreen extends AppCompatActivity {
@@ -17,6 +16,13 @@ public class LaunchScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isNightModeEnabled = readNightModeState();
+        // Apply the saved night mode state
+        if (isNightModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         setContentView(R.layout.activity_launch_screen);
         new Handler().postDelayed(() -> {
             Intent toLanding = new Intent(this, LockScreen.class);
@@ -24,5 +30,9 @@ public class LaunchScreen extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, SPLASH_DURATION);
+    }
+    private boolean readNightModeState() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.UI_PREF, MODE_PRIVATE);
+        return sharedPreferences.getBoolean(MainActivity.NIGHT_MODE_KEY, false);
     }
 }

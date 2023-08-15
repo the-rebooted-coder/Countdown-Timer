@@ -21,13 +21,13 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -60,27 +60,33 @@ public class MainActivity extends AppCompatActivity {
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
     private static final String PREFS_NAME = "MyPrefsFile";
-    private static final String NOTIFICATION_SHOWN_KEY = "notificationShown";
+    private static final String NOTIFICATION_SHOWN = "notificationShown";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
     private AlertDialog firstDialog;
+    public static final String UI_PREF = "night_mode_pref";
+    public static final String NIGHT_MODE_KEY = "night_mode";
+    private SharedPreferences sharedPreferences;
+    private boolean isNightModeEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
+        isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
-        if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN_KEY, false)) {
+        if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN, false)) {
             // Show the notification here
             showNotification();
             // Set the flag to indicate that the notification has been shown
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putBoolean(NOTIFICATION_SHOWN_KEY, true);
+            editor.putBoolean(NOTIFICATION_SHOWN, true);
             editor.apply();
         }
         secondaryFab1.setOnClickListener(view -> {
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         secondaryFab2.setOnClickListener(view -> {
             // Perform action for secondaryFab2
-            Toast.makeText(this, "Secondary FAB 2 clicked", Toast.LENGTH_SHORT).show();
+            toggleNightMode();
             // Add your desired action here
         });
         startCountdownService();
@@ -135,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
                 handleFabClick(view);
             }
         });
+        // Set initial night mode state
+        if (isNightModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
 
         // Set the target date and time (30 August 2023, 12:00 AM)
         Calendar targetDate = Calendar.getInstance();
@@ -172,6 +184,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }.start();
         }
+    }
+    private void toggleNightMode() {
+        isNightModeEnabled = !isNightModeEnabled;
+        saveNightModeState(isNightModeEnabled);
+
+        if (isNightModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        recreate(); // Recreate the activity to apply the new night mode
+    }
+
+    private void saveNightModeState(boolean isEnabled) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(NIGHT_MODE_KEY, isEnabled);
+        editor.apply();
     }
     private void toggleSecondaryFabs() {
         if (isSecondaryFabOpen) {
