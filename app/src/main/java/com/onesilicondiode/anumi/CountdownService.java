@@ -99,6 +99,7 @@ public class CountdownService  extends Service {
                 .setColor(ContextCompat.getColor(this, R.color.pink))
                 .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/anumi"))
                 .setContentIntent(pendingIntent)
+                .setColorized(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOngoing(true)
                 .build();

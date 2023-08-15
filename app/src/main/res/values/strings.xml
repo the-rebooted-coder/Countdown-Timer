@@ -5,4 +5,6 @@
     <string name="_1_day_left">1 day left</string>
     <string name="hemlo_bhumi">Hemlo Bhumi 👋</string>
     <string name="unlock_app">UNLOCK APP</string>
+    <string name="app_update_button_fab">App Update Button</string>
+    <string name="app_appearance_fab">App Appearance FAB</string>
 </resources>
