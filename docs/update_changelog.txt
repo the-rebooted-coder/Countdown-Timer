@@ -1,4 +1,4 @@
 1. Adds a Splash Screen on App Launch 🥂.
 2. Dark Mode has arrived to save your eyes Bhumi 👀.
 3. Homecoming Notification is now colorful 🍒.
-3. Update Button shifted to a better place.
+4. Update Button shifted to a better place.
