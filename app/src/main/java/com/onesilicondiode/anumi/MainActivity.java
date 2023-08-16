@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 0) {
+            if (value > 1) {
                 return true;
             }
         }

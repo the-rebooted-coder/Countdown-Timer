@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LockScreen"
+    android:background="#0e0e0e"
     android:padding="16dp">
     <View
         android:id="@+id/dummyFocusView"
