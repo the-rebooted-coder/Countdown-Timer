@@ -11,8 +11,8 @@ android {
         applicationId "com.onesilicondiode.anumi"
         minSdk 26
         targetSdk 33
-        versionCode 2
-        versionName "PizzaHut 🍕"
+        versionCode 3
+        versionName "PaathBaba 🛕"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
