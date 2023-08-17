@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
+    private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
     public static final String UI_PREF = "night_mode_pref";
     public static final String NIGHT_MODE_KEY = "night_mode";
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
+        secondaryFab3 = findViewById(R.id.secondaryFab3);
         if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN, false)) {
             // Show the notification here
             showNotification();
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animation animation) {
                         secondaryFab1.setVisibility(View.GONE);
                         secondaryFab2.setVisibility(View.GONE);
+                        secondaryFab3.setVisibility(View.GONE);
                     }
                 });
 
@@ -131,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
             // Perform action for secondaryFab2
             toggleNightMode();
             // Add your desired action here
+        });
+        secondaryFab3.setOnClickListener(view -> {
+            // Perform action for secondaryFab3
+            Toast.makeText(this,"Hehe",Toast.LENGTH_SHORT).show();
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -213,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     .start();
             secondaryFab1.setVisibility(View.GONE);
             secondaryFab2.setVisibility(View.GONE);
+            secondaryFab3.setVisibility(View.GONE);
         } else {
             updateApp.animate()
                     .rotation(180)
@@ -220,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                     .start();
             secondaryFab1.setVisibility(View.VISIBLE);
             secondaryFab2.setVisibility(View.VISIBLE);
+            secondaryFab3.setVisibility(View.VISIBLE);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
     }
