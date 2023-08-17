@@ -27,42 +27,50 @@
         android:theme="@style/Theme.Anumi"
         tools:targetApi="31">
         <activity
+            android:name=".LockApp"
+            android:exported="false" />
+        <activity
             android:name=".LaunchScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LockScreen"
-            android:exported="true">
-        </activity>
-        <receiver android:name=".SampleBroadcast"
+            android:exported="true"></activity>
+
+        <receiver
+            android:name=".SampleBroadcast"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".CountdownService"
             android:enabled="true"
             android:exported="true" />
         <service
             android:name=".CountdownLiveWallpaperService"
-            android:enabled="true"
-            android:label="Homecoming Wallpaper"
             android:attributionTags="Spandan Saxena"
             android:description="@string/live_wallpaper_desc"
-            android:permission="android.permission.BIND_WALLPAPER"
-            android:exported="true">
+            android:enabled="true"
+            android:exported="true"
+            android:label="Homecoming Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.wallpaper"
                 android:resource="@xml/countdown_wallpaper_info" />
         </service>
+
         <receiver
             android:name=".CountdownWidgetProvider"
             android:exported="true"
@@ -71,6 +79,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
@@ -82,7 +91,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>

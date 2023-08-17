@@ -132,12 +132,15 @@ public class MainActivity extends AppCompatActivity {
 
         secondaryFab2.setOnClickListener(view -> {
             // Perform action for secondaryFab2
+            long[] pattern = {0, 100, 100, 100, 200, 100};
+            if (vibrator != null && vibrator.hasVibrator()) {
+                vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+            }
             toggleNightMode();
-            // Add your desired action here
         });
         secondaryFab3.setOnClickListener(view -> {
             // Perform action for secondaryFab3
-            Toast.makeText(this,"Hehe",Toast.LENGTH_SHORT).show();
+            goToLock();
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -193,6 +196,17 @@ public class MainActivity extends AppCompatActivity {
             }.start();
         }
     }
+
+    private void goToLock() {
+        long[] pattern = {0, 100, 100, 100, 200, 100};
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+        }
+        Intent toLock = new Intent(MainActivity.this,LockApp.class);
+        startActivity(toLock);
+        finish();
+    }
+
     private void toggleNightMode() {
         isNightModeEnabled = !isNightModeEnabled;
         saveNightModeState(isNightModeEnabled);
