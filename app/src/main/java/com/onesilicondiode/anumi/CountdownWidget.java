@@ -20,13 +20,23 @@ public class CountdownWidget {
         targetDate.set(Calendar.MINUTE, 0);
         targetDate.set(Calendar.SECOND, 0);
         targetDate.set(Calendar.MILLISECOND, 0);
-
         long millisUntilEnd = targetDate.getTimeInMillis() - today.getTimeInMillis();
         int daysRemaining = (int) (millisUntilEnd / (24 * 60 * 60 * 1000));
 
+        String countdownMessage;
+        if (daysRemaining < 1) {
+            countdownMessage = "Pack your bags";
+        } else if (daysRemaining == 1) {
+            countdownMessage = "Just 1 to Go!";
+        } else {
+            countdownMessage = daysRemaining + " days left!";
+        }
+        if (millisUntilEnd <= 0) {
+            countdownMessage = "Happy Homecoming";
+        }
         // Update the widget with the new countdown
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.countdown_widget_layout);
-        remoteViews.setTextViewText(R.id.widget_countdown_text, "Only " + daysRemaining + " days left!");
+        remoteViews.setTextViewText(R.id.widget_countdown_text, countdownMessage);
         int imageResource = getImageResourceId(currentDay);
         remoteViews.setImageViewResource(R.id.widget_cat_image, imageResource);
 
@@ -40,32 +50,41 @@ public class CountdownWidget {
     }
     private static int getImageResourceId(int day) {
         int[] imageResources = {
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
-                R.drawable.day1_image,
-                R.drawable.day2_image,
-                R.drawable.day3_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day17_image,
+                R.drawable.day18_image,
+                R.drawable.day19_image,
+                R.drawable.day20_image,
+                R.drawable.day21_image,
+                R.drawable.day22_image,
+                R.drawable.day23_image,
+                R.drawable.day24_image,
+                R.drawable.day25_image,
+                R.drawable.day26_image,
+                R.drawable.day27_image,
+                R.drawable.day28_image,
+                R.drawable.day29_image,
                 // Add more resource IDs for each day's image
         };
-        return imageResources[day - 1]; // Adjust for 0-based index
+        if (day >= 1 && day <= imageResources.length) {
+            return imageResources[day - 1]; // Adjust for 0-based index
+        } else {
+            return R.drawable.cutecat; // Use a default image resource ID
+        }
     }
 }
