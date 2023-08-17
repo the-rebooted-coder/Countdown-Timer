@@ -48,7 +48,19 @@
             android:name=".CountdownService"
             android:enabled="true"
             android:exported="true" />
-
+        <service
+            android:name=".CountdownLiveWallpaperService"
+            android:enabled="true"
+            android:label="Countdown Live Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/countdown_wallpaper_info" />
+        </service>
         <receiver
             android:name=".CountdownWidgetProvider"
             android:exported="true"
