@@ -61,8 +61,11 @@ public class CountdownWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        Calendar today = Calendar.getInstance();
+        int currentDay = today.get(Calendar.DAY_OF_MONTH);
+
         for (int appWidgetId : appWidgetIds) {
-            CountdownWidget.updateWidget(context, appWidgetManager, appWidgetId);
+            CountdownWidget.updateWidget(context, appWidgetManager, appWidgetId, currentDay);
         }
     }
 }
