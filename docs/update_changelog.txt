@@ -1,2 +1,2 @@
 1. Get a full zoo running right at your screen, remove and re-add the widget 🦍.
-2. More reliable notifications⚡.
+2. Notifications are more persistent now⚡.
