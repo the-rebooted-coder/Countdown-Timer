@@ -51,7 +51,9 @@
         <service
             android:name=".CountdownLiveWallpaperService"
             android:enabled="true"
-            android:label="Countdown Live Wallpaper"
+            android:label="Homecoming Wallpaper"
+            android:attributionTags="Spandan Saxena"
+            android:description="@string/live_wallpaper_desc"
             android:permission="android.permission.BIND_WALLPAPER"
             android:exported="true">
             <intent-filter>

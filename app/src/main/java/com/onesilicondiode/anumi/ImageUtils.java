@@ -3,25 +3,24 @@ package com.onesilicondiode.anumi;
 public class ImageUtils {
     public static int getImageResourceId(int day) {
         int[] imageResources = {
-                R.drawable.day17_image,
-                R.drawable.day18_image,
-                R.drawable.day19_image,
-                R.drawable.day20_image,
-                R.drawable.day21_image,
-                R.drawable.day22_image,
-                R.drawable.day23_image,
-                R.drawable.day24_image,
-                R.drawable.day25_image,
-                R.drawable.day26_image,
-                R.drawable.day27_image,
-                R.drawable.day28_image,
-                R.drawable.day29_image,
+                R.drawable.wall_17,
+                R.drawable.wall_18,
+                R.drawable.wall_19,
+                R.drawable.wall_20,
+                R.drawable.wall_21,
+                R.drawable.wall_22,
+                R.drawable.wall_23,
+                R.drawable.wall_24,
+                R.drawable.wall_25,
+                R.drawable.wall_26,
+                R.drawable.wall_27,
+                R.drawable.wall_28,
         };
 
         if (day >= 1 && day <= imageResources.length) {
             return imageResources[day - 1]; // Adjust for 0-based index
         } else {
-            return R.drawable.day17_image; // Use a default image resource ID
+            return R.drawable.wall_28;
         }
     }
 }

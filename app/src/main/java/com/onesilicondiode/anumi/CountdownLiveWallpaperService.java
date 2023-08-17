@@ -23,12 +23,7 @@ public class CountdownLiveWallpaperService extends WallpaperService {
         private static final long DELAY_MILLIS = 1000;
 
         private final Handler handler = new Handler();
-        private final Runnable drawRunner = new Runnable() {
-            @Override
-            public void run() {
-                draw();
-            }
-        };
+        private final Runnable drawRunner = () -> draw();
 
         private int currentDay;
         private boolean isHappyHomecoming;
@@ -126,7 +121,7 @@ public class CountdownLiveWallpaperService extends WallpaperService {
             int imageResource;
 
             if (isHappyHomecoming) {
-                imageResource = R.drawable.day29_image; // Replace with your "Happy Homecoming" image
+                imageResource = R.drawable.wall_28; // Replace with your "Happy Homecoming" image
             } else {
                 imageResource = getImageResourceId(currentDay);
             }
@@ -137,10 +132,27 @@ public class CountdownLiveWallpaperService extends WallpaperService {
             int canvasHeight = canvas.getHeight();
             int drawableWidth = drawable.getIntrinsicWidth();
             int drawableHeight = drawable.getIntrinsicHeight();
-            int left = (canvasWidth - drawableWidth) / 2;
-            int top = (canvasHeight - drawableHeight) / 2;
 
-            drawable.setBounds(left, top, left + drawableWidth, top + drawableHeight);
+            // Calculate aspect ratios for the image and the canvas
+            float imageAspectRatio = (float) drawableWidth / drawableHeight;
+            float canvasAspectRatio = (float) canvasWidth / canvasHeight;
+
+            // Calculate scaling factors to fit the image within the canvas while preserving aspect ratio
+            float scale;
+            if (imageAspectRatio > canvasAspectRatio) {
+                scale = (float) canvasWidth / drawableWidth;
+            } else {
+                scale = (float) canvasHeight / drawableHeight;
+            }
+            // Calculate new dimensions for the scaled image
+            int scaledWidth = Math.round(drawableWidth * scale);
+            int scaledHeight = Math.round(drawableHeight * scale);
+
+            // Calculate position to center the image on the canvas
+            int left = (canvasWidth - scaledWidth) / 2;
+            int top = (canvasHeight - scaledHeight) / 2;
+
+            drawable.setBounds(left, top, left + scaledWidth, top + scaledHeight);
             drawable.draw(canvas);
         }
     }

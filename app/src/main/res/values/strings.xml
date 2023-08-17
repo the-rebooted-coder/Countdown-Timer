@@ -7,4 +7,5 @@
     <string name="unlock_app">UNLOCK APP</string>
     <string name="app_update_button_fab">App Update Button</string>
     <string name="app_appearance_fab">App Appearance FAB</string>
+    <string name="live_wallpaper_desc">Choose this awesome wallpaper to get your homecoming date right at your screen</string>
 </resources>
