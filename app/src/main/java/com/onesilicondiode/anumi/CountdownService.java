@@ -14,6 +14,7 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.os.SystemClock;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -141,10 +142,19 @@ public class CountdownService  extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        if (countdownTimer != null) {
-            countdownTimer.cancel();
-        }
-        stopForeground(true);
+        startCountdown();
+    }
+    @Override
+    //Action that keeps service running even after removed from resents
+    public void onTaskRemoved(Intent rootIntent){
+        Intent restartServiceTask = new Intent(getApplicationContext(),this.getClass());
+        restartServiceTask.setPackage(getPackageName());
+        PendingIntent restartPendingIntent =PendingIntent.getService(getApplicationContext(), 1,restartServiceTask, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
+        AlarmManager myAlarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        myAlarmService.set(
+                AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + 1000,
+                restartPendingIntent);
+        super.onTaskRemoved(rootIntent);
     }
 }
