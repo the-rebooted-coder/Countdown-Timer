@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
         request.setTitle("Anumi-Update.apk");
         request.setDescription("Smile 🙂");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Anumi-Update.apk");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "New-Update.apk");
 
         // Get the download service and enqueue the download request
         DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
         }
             AlertDialog.Builder secondD = new AlertDialog.Builder(this);
             secondD.setTitle("Here's how to update")
-                    .setMessage("Simply open your phone's 'File Manager' go to 'Downloads' folder, install Anumi-Update!\n\nYou're Done!🥂")
+                    .setMessage("Open your phone's 'File Manager' go to 'Downloads' folder, install the file named New-Update!\n\nYou're Done!🥂")
                     .setIcon(R.drawable.how_to_update)
                     .setPositiveButton("OKAY!", (dialog, which) -> {
                     })
