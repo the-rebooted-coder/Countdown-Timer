@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
+        setStatusBarColor(getResources().getColor(R.color.orange));
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
@@ -196,7 +197,9 @@ public class MainActivity extends AppCompatActivity {
         }
         recreate(); // Recreate the activity to apply the new night mode
     }
-
+    private void setStatusBarColor(int color) {
+        getWindow().setStatusBarColor(color);
+    }
     private void saveNightModeState(boolean isEnabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(NIGHT_MODE_KEY, isEnabled);
