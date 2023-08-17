@@ -41,6 +41,11 @@ public class LockScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isUnlocked = getSharedPreferences(LOCK_UNLOCK, MODE_PRIVATE)
+                .getBoolean(IS_UNLOCKED_KEY, false);
+        if (isUnlocked) {
+            startMainActivity();
+        }
         setContentView(R.layout.activity_lock_screen);
         pinEditText = findViewById(R.id.pinEditText);
         pinTextInputLayout = findViewById(R.id.pinTextInputLayout);
@@ -63,27 +68,18 @@ public class LockScreen extends AppCompatActivity {
             }
         }, INITIAL_TEXT_DURATION_MS);
         // Check if the app is already unlocked
-        boolean isUnlocked = getSharedPreferences(LOCK_UNLOCK, MODE_PRIVATE)
-                .getBoolean(IS_UNLOCKED_KEY, false);
-
-        if (isUnlocked) {
-            startMainActivity();
-        }
     }
     private void startTextFadingSequence() {
         // After a delay, change to the next text
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Increase the index and loop back to the first text if necessary
-                currentTextIndex = (currentTextIndex + 1) % texts.length;
+        handler.postDelayed(() -> {
+            // Increase the index and loop back to the first text if necessary
+            currentTextIndex = (currentTextIndex + 1) % texts.length;
 
-                // Fade the text to the next one
-                fadeText(texts[currentTextIndex]);
+            // Fade the text to the next one
+            fadeText(texts[currentTextIndex]);
 
-                // Repeat the sequence
-                startTextFadingSequence();
-            }
+            // Repeat the sequence
+            startTextFadingSequence();
         }, TEXT_CHANGE_DELAY_MS);
     }
     private void fadeText(final String newText) {
@@ -133,7 +129,7 @@ public class LockScreen extends AppCompatActivity {
         pinTextInputLayout.startAnimation(shake);
     }
     private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LockApp.class);
         startActivity(intent);
         finish();
     }

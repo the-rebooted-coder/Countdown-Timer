@@ -1,5 +1,8 @@
 package com.onesilicondiode.anumi;
 
+import static com.onesilicondiode.anumi.LockApp.APP_IS_UNLOCKED;
+import static com.onesilicondiode.anumi.LockApp.APP_LOCK;
+
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -202,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
         if (vibrator != null && vibrator.hasVibrator()) {
             vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
         }
+        getSharedPreferences(APP_LOCK, MODE_PRIVATE).edit()
+                .putBoolean(APP_IS_UNLOCKED, false)
+                .apply();
         Intent toLock = new Intent(MainActivity.this,LockApp.class);
         startActivity(toLock);
         finish();
