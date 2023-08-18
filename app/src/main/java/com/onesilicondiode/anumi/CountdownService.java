@@ -103,7 +103,18 @@ public class CountdownService  extends Service {
     }
 
     private void updateNotification(int daysLeft) {
-        String contentText = (daysLeft > 0) ?  daysLeft + " days remaining Bhumi": "Pack your bags!";
+        String contentText;
+        if (daysLeft > 7) {
+            contentText = daysLeft + " days remaining Bhumi";
+        } else if (daysLeft == 7) {
+            contentText = "Just a week remaining Bhumi";
+        } else if (daysLeft > 1) {
+            contentText = "Just " + daysLeft + " days remaining Bhumi";
+        } else if (daysLeft == 1) {
+            contentText = "24 Hours to Go.";
+        } else {
+            contentText = "Pack your bags! 👜";
+        }
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
