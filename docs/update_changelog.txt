@@ -1,5 +1,7 @@
 1. Get a full zoo running right at your screen, remove and re-add the widget 🦍.
 2. Gorgeous Live-Wallpapers are here to elevate your home-screen looks 🌅.
-3. Dark mode is now animated 🤝.
-4. A military-grade secure lock, to lock the app when you need 🔒.
-5. Notifications are more persistent now⚡️.
+3. Buttons look better on both modes now ✅.
+4. Light Mode has a better background 🥂.
+5. Dark mode is now animated 🤝.
+6. A military-grade secure lock, to lock the app when you need 🔒.
+7. Notifications are more persistent now⚡️.
