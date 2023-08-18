@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
-    private static final String WALLPAPER_NOTIF_SHOWN = "LivingWallpaper";
-    private static final String WALLPAPER_NOTIF = "WallpapersLively";
+    private static final String WALLPAPER_NOTIF_SHOWN = "LivingWallpapers";
+    private static final String WALLPAPER_NOTIF = "WallpapersLivelys";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
     private boolean isSecondaryFabOpen = false;
@@ -283,19 +283,19 @@ public class MainActivity extends AppCompatActivity {
         NotificationChannel channel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 "Widget Info",
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
         );
         notificationManager.createNotificationChannel(channel);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.wall_notif_image)
-                .setContentTitle("Live Wallpapers are here Bhumi🎉!")
-                .setContentText("Try setting live wallpaper")
+                .setContentTitle("Re-apply Live Wallpaper 🌄")
+                .setContentText("Re-add Widget to refresh it 🥂")
                 .setColor(R.color.yellow)
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .setBigContentTitle("Live Wallpapers are here Bhumi🎉!")
-                        .bigText("Try setting live wallpaper of homecoming to get the countdown straight at your screen!"))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setBigContentTitle("Re-apply Live Wallpaper 🌄")
+                        .bigText("Re-add Widget to refresh it 🥂"))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setAutoCancel(false);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 2) {
+            if (value > 3) {
                 return true;
             }
         }
