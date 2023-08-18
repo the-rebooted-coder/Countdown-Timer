@@ -59,7 +59,6 @@ public class LockApp extends AppCompatActivity {
                 authenticateWithPIN(CORRECT_PIN);
             }
             usePinButton = findViewById(R.id.btnUsePin);
-
             usePinButton.setOnClickListener(v -> showPinInputDialog());
         }
     }

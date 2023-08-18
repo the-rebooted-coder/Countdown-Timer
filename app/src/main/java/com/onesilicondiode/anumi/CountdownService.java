@@ -121,7 +121,7 @@ public class CountdownService  extends Service {
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_logo)
                 .setColor(ContextCompat.getColor(this, R.color.pink))
-                .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/anumi"))
+                .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/anumi_notif"))
                 .setContentIntent(pendingIntent)
                 .setColorized(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
