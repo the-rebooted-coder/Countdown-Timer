@@ -27,6 +27,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
-    private static final String WALLPAPER_NOTIF_SHOWN = "LivingWallpapers";
-    private static final String WALLPAPER_NOTIF = "WallpapersLivelys";
+    private static final String WALLPAPER_NOTIF_SHOWN = "ThisisLively";
+    private static final String WALLPAPER_NOTIF = "LiveHomeWallpaper";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
     private boolean isSecondaryFabOpen = false;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         if (!sharedPrefs.getBoolean(WALLPAPER_NOTIF, false)) {
             // Show the notification here
             showNotification();
+            showInfoAlertDialog();
             // Set the flag to indicate that the notification has been shown
             SharedPreferences.Editor editor = sharedPrefs.edit();
             editor.putBoolean(WALLPAPER_NOTIF, true);
@@ -251,7 +253,27 @@ public class MainActivity extends AppCompatActivity {
         intent.setData(Uri.parse("tel:+91-7000580097"));
         startActivity(intent);
     }
+    private void showInfoAlertDialog() {
+        // Inflate the custom layout for the AlertDialog
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_info, null);
+        ImageView infoImageView = dialogView.findViewById(R.id.infoImageView);
 
+        // Set the image in the ImageView
+        infoImageView.setImageResource(R.drawable.info_image);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setTitle("Volume Down to Call")
+                .setCancelable(false)
+                .setMessage("When you press the volume-down button, a quick call will be placed!")
+                .setPositiveButton("GOTCHA!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User acknowledged the information
+                    }
+                })
+                .show();
+    }
     private void toggleNightMode() {
         isNightModeEnabled = !isNightModeEnabled;
         saveNightModeState(isNightModeEnabled);
