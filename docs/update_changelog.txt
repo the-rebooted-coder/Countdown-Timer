@@ -1,4 +1,5 @@
 1. The notification now matches the color of the live wallpaper 🌄.
-2. Call Anshu anytime by just pressing the volume-down button inside the app 📞.
+2. Call Anshu anytime by just pressing the volume-down button within the app 📞.
+3. The widget space is utilized more efficiently, looks better now 🥂.
 REMEMBER: Remove and re-add the widget to make it work.
 You will need to set the live wallpaper again.
