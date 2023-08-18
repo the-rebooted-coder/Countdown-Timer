@@ -1,3 +1,3 @@
-Fixes the Wallpaper Bug 🐞!!
-And ofc all the other great things.
-REMOVE the old widget from the screen before installing this update, and re-add after updating 🏗️
+1. The notification now matches the color of the live wallpaper 🌄
+REMEMBER: Remove and re-add the widget to make them work
+You will need to set the live wallpaper again.
