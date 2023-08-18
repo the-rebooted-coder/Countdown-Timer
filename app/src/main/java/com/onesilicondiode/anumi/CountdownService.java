@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -63,14 +64,27 @@ public class CountdownService  extends Service {
         Intent updateIntent = new Intent(this, MidnightUpdateReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_MUTABLE);
 
-        // Calculate the time until the next midnight
-        long currentTimeMillis = System.currentTimeMillis();
-        long timeUntilMidnight = MILLIS_PER_DAY - (currentTimeMillis % MILLIS_PER_DAY);
+        // Get current time and date
+        Calendar currentTime = Calendar.getInstance();
+
+        // Set the time to midnight
+        currentTime.set(Calendar.HOUR_OF_DAY, 0);
+        currentTime.set(Calendar.MINUTE, 0);
+        currentTime.set(Calendar.SECOND, 0);
+        currentTime.set(Calendar.MILLISECOND, 0);
+
+        // If the current time is past midnight, add one day
+        if (System.currentTimeMillis() >= currentTime.getTimeInMillis()) {
+            currentTime.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        // Calculate time until next midnight
+        long timeUntilMidnight = currentTime.getTimeInMillis() - System.currentTimeMillis();
 
         // Schedule the update at the next midnight
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, currentTimeMillis + timeUntilMidnight, pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeUntilMidnight, pendingIntent);
         }
     }
 
@@ -78,12 +92,16 @@ public class CountdownService  extends Service {
         CharSequence name = "Countdown Channel";
         String description = "Countdown Notification Channel";
         int importance = NotificationManager.IMPORTANCE_HIGH;
-        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.anumi);
+        // Debugging: Log the soundUri to check if it's correct
+        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getApplicationContext().getPackageName() + "/" + R.raw.anumi_notif);
+        Log.d("NotificationSound", "Sound URI: " + soundUri.toString());
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .build();
         NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+        // Debugging: Log the soundUri again before setting it to the channel
+        Log.d("NotificationSound", "Setting Sound URI to Channel: " + soundUri.toString());
         channel.setDescription(description);
         channel.setSound(soundUri, audioAttributes);
         notificationManager.createNotificationChannel(channel);
