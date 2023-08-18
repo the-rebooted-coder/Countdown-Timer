@@ -132,7 +132,6 @@ public class LockApp extends AppCompatActivity {
                         @Override
                         public void onAuthenticationError(int errorCode, CharSequence errString) {
                             // Handle authentication errors
-                            Toast.makeText(LockApp.this, "Fingerprint authentication failed: " + errString, Toast.LENGTH_SHORT).show();
                         }
                     }, null);
         } catch (Exception e) {
