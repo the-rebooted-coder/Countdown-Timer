@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -238,19 +239,43 @@ public class MainActivity extends AppCompatActivity {
                     .rotation(0)
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
-            secondaryFab1.setVisibility(View.GONE);
-            secondaryFab2.setVisibility(View.GONE);
-            secondaryFab3.setVisibility(View.GONE);
+            animateSecondaryFabsOut(secondaryFab1);
+            animateSecondaryFabsOut(secondaryFab2);
+            animateSecondaryFabsOut(secondaryFab3);
         } else {
             updateApp.animate()
                     .rotation(180)
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
-            secondaryFab1.setVisibility(View.VISIBLE);
-            secondaryFab2.setVisibility(View.VISIBLE);
-            secondaryFab3.setVisibility(View.VISIBLE);
+            animateSecondaryFabsIn(secondaryFab1);
+            animateSecondaryFabsIn(secondaryFab2);
+            animateSecondaryFabsIn(secondaryFab3);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
+    }
+    private void animateSecondaryFabsIn(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0f);
+        view.setScaleX(0f);
+        view.setScaleY(0f);
+        view.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(300)
+                .setInterpolator(new OvershootInterpolator())
+                .start();
+    }
+
+    private void animateSecondaryFabsOut(View view) {
+        view.animate()
+                .alpha(0f)
+                .scaleX(0f)
+                .scaleY(0f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateInterpolator())
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
     }
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
