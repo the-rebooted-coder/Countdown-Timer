@@ -102,6 +102,7 @@ public class CountdownService  extends Service {
     }
 
     private void updateNotification(int daysLeft) {
+        int notificationColor = getNotificationColor(daysLeft);
         String contentText;
         if (daysLeft > 7) {
             contentText = daysLeft + " days remaining Bhumi";
@@ -120,7 +121,7 @@ public class CountdownService  extends Service {
                 .setContentTitle("Homecoming")
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_logo)
-                .setColor(ContextCompat.getColor(this, R.color.pink))
+                .setColor(notificationColor)
                 .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/raw/anumi_notif"))
                 .setContentIntent(pendingIntent)
                 .setColorized(true)
@@ -129,7 +130,34 @@ public class CountdownService  extends Service {
                 .build();
         startForeground(NOTIFICATION_ID, notification);
     }
+    private int getNotificationColor(int daysLeft) {
+        int colorResId;
+        if (daysLeft > 9) {
+            colorResId = R.color.pink; // Set the appropriate color resource for more than 7 days
+        } else if (daysLeft == 9) {
+            colorResId = R.color.brown;
+        } else if (daysLeft == 8) {
+            colorResId = R.color.green;
+        } else if (daysLeft == 7) {
+            colorResId = R.color.blue;
+        } else if (daysLeft == 6) {
+            colorResId = R.color.orangeish;
+        } else if (daysLeft == 5) {
+            colorResId = R.color.yellow;
+        } else if (daysLeft == 4) {
+            colorResId = R.color.gray;
+        } else if (daysLeft == 3) {
+            colorResId = R.color.pinkish;
+        } else if (daysLeft == 2) {
+            colorResId = R.color.purple;
+        } else if (daysLeft == 1) {
+            colorResId = R.color.violet;
+        } else {
+            colorResId = R.color.tonal;
+        }
 
+        return ContextCompat.getColor(this, colorResId);
+    }
     public void startCountdown() {
         Calendar endDate = Calendar.getInstance();
         endDate.set(Calendar.YEAR, 2023);
