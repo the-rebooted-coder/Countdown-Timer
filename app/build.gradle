@@ -11,8 +11,8 @@ android {
         applicationId "com.onesilicondiode.anumi"
         minSdk 26
         targetSdk 33
-        versionCode 3
-        versionName "PaathBaba 🛕"
+        versionCode 4
+        versionName "PaathBaba 🕍"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

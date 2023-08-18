@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
     private void initiateApkDownload() {
     // Create a download request for the APK file
     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
-        request.setTitle("Anumi-Update.apk");
+        request.setTitle("New-Update.apk");
         request.setDescription("Smile 🙂");
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "New-Update.apk");
 
@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 1) {
+            if (value > 2) {
                 return true;
             }
         }
