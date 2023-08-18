@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
+    private static final int REQUEST_CALL_PERMISSION = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean(WALLPAPER_NOTIF, true);
             editor.apply();
         }
+        setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         secondaryFab1.setOnClickListener(view -> {
             // Perform action for secondaryFab1
             if (isNetworkAvailable()) {
@@ -212,6 +216,40 @@ public class MainActivity extends AppCompatActivity {
         Intent toLock = new Intent(MainActivity.this,LockApp.class);
         startActivity(toLock);
         finish();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            // Display an AlertDialog to confirm the call
+            showCallConfirmationDialog();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    private void showCallConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Call your Anshu")
+                .setIcon(R.drawable.phone)
+                .setCancelable(false)
+                .setMessage("Do you want to call him?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callAnshuNumber();
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User chose not to call, do nothing
+                    }
+                })
+                .show();
+    }
+    private void callAnshuNumber() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:+91-7000580097"));
+        startActivity(intent);
     }
 
     private void toggleNightMode() {
