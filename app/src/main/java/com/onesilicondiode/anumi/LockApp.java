@@ -77,7 +77,7 @@ public class LockApp extends AppCompatActivity {
                         TextInputEditText pinEditText = dialogView.findViewById(R.id.appUnlockPin);
                         String enteredPin = pinEditText.getText().toString();
                         if (enteredPin.equals("2908")) {
-                            navigateToMainActivity();
+                            navigateToNextScreen();
                         } else {
                             long[] pattern = {0, 100, 100, 100, 200, 100};
                             if (vibrator != null && vibrator.hasVibrator()) {
@@ -91,11 +91,6 @@ public class LockApp extends AppCompatActivity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-    private void navigateToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
     private void shakeDialogAndShowError() {
         Toast.makeText(this,"Uh-huh Wrong PIN 🤦‍♂️", Toast.LENGTH_SHORT).show();

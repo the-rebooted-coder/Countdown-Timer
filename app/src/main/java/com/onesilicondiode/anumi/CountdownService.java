@@ -29,7 +29,6 @@ public class CountdownService  extends Service {
     private NotificationManager notificationManager;
     private CountDownTimer countdownTimer;
 
-    private static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000; // 1 day in milliseconds
 
 
     @Nullable
