@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
-    public static final String UI_PREF = "night_mode_pref";
-    public static final String NIGHT_MODE_KEY = "night_mode";
+    public static final String UI_PREF = "night_mode_preference";
+    public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
 
