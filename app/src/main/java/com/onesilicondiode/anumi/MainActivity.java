@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
-    private static final String PREFS_NAME = "MyPrefsFile";
-    private static final String NOTIFICATION_SHOWN = "notificationShown";
+    private static final String WALLPAPER_NOTIF_SHOWN = "LivingWallpaper";
+    private static final String WALLPAPER_NOTIF = "WallpapersLively";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
     private boolean isSecondaryFabOpen = false;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs = getSharedPreferences(WALLPAPER_NOTIF_SHOWN, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
@@ -88,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
-        if (!sharedPrefs.getBoolean(NOTIFICATION_SHOWN, false)) {
+        if (!sharedPrefs.getBoolean(WALLPAPER_NOTIF, false)) {
             // Show the notification here
             showNotification();
             // Set the flag to indicate that the notification has been shown
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putBoolean(NOTIFICATION_SHOWN, true);
+            editor.putBoolean(WALLPAPER_NOTIF, true);
             editor.apply();
         }
         secondaryFab1.setOnClickListener(view -> {
@@ -279,22 +279,22 @@ public class MainActivity extends AppCompatActivity {
     }
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         // Create a notification channel for Android Oreo and above
         NotificationChannel channel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 "Widget Info",
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
         );
         notificationManager.createNotificationChannel(channel);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.home)
-                .setContentTitle("Hey Bhumi 👋")
-                .setContentText("Add the widget by touching and holding homescreen, then tap widgets")
+                .setSmallIcon(R.drawable.wall_notif_image)
+                .setContentTitle("Live Wallpapers are here Bhumi🎉!")
+                .setContentText("Try setting live wallpaper")
+                .setColor(R.color.yellow)
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .setBigContentTitle("Hey Bhumi 👋, see how many days left, on your screen!")
-                        .bigText("Just touch and hold on screen, then tap widgets"))
+                        .setBigContentTitle("Live Wallpapers are here Bhumi🎉!")
+                        .bigText("Try setting live wallpaper of homecoming to get the countdown straight at your screen!"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(false);
 
