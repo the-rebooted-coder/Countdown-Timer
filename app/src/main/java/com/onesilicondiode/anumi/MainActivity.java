@@ -65,8 +65,8 @@ import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Vibrator vibrator;
-    private FloatingActionButton updateApp;
+    public static final String UI_PREF = "night_mode_preference";
+    public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK = 121;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
@@ -76,19 +76,20 @@ public class MainActivity extends AppCompatActivity {
     private static final String WALLPAPER_NOTIF = "LiveHomeWallpaper";
     private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
     private static final int NOTIFICATION_ID = 1;
+    private static final String ALERT_DIALOG_SHOWN_KEY = "alert_dialog_shown";
+    private static final int REQUEST_CALL_PERMISSION = 12;
+    String targetPackageName = "com.onesilicondiode.store";
+    private Vibrator vibrator;
+    private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private FloatingActionButton secondaryFab4;
     private AlertDialog firstDialog;
-    public static final String UI_PREF = "night_mode_preference";
-    public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
-    String targetPackageName = "com.onesilicondiode.store";
-
-    private static final int REQUEST_CALL_PERMISSION = 12;
+    private SharedPreferences sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
         secondaryFab4 = findViewById(R.id.secondaryFab4);
+        boolean alertDialogShown = sharedPrefs.getBoolean(ALERT_DIALOG_SHOWN_KEY, false);
+        if (isAppInstalled(targetPackageName)) {
+            if (!alertDialogShown) {
+                showInfoAlertDialog();
+            }
+        }
         if (!sharedPrefs.getBoolean(WALLPAPER_NOTIF, false)) {
             // Show the notification here
             showNotification();
@@ -121,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
                 // Set an animation listener to make the button invisible when the animation is done
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {}
+                    public void onAnimationStart(Animation animation) {
+                    }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {}
+                    public void onAnimationRepeat(Animation animation) {
+                    }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
@@ -144,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     // Permission not granted, request it
                     requestWriteExternalStoragePermission();
                 }
-            }
-            else {
+            } else {
                 // Show "No internet" message
                 Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
             }
@@ -283,10 +291,11 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(APP_LOCK, MODE_PRIVATE).edit()
                 .putBoolean(APP_IS_UNLOCKED, false)
                 .apply();
-        Intent toLock = new Intent(MainActivity.this,LockApp.class);
+        Intent toLock = new Intent(MainActivity.this, LockApp.class);
         startActivity(toLock);
         finish();
     }
+
     private boolean isAppInstalled(String packageName) {
         PackageManager pm = getPackageManager();
         try {
@@ -300,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
@@ -309,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     private void showCallConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Call your Anshu")
@@ -329,32 +340,36 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
     private void callAnshuNumber() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:+91-7000580097"));
         startActivity(intent);
     }
+
     private void showInfoAlertDialog() {
-        // Inflate the custom layout for the AlertDialog
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_info, null);
         ImageView infoImageView = dialogView.findViewById(R.id.infoImageView);
 
         // Set the image in the ImageView
-        infoImageView.setImageResource(R.drawable.info_image);
+       // infoImageView.setImageResource(R.drawable.info_image);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
-                .setTitle("Volume Down to Call")
+                .setTitle("Welcome 'Store'👋")
                 .setCancelable(false)
-                .setMessage("When you press the volume-down button, a quick call will be placed!")
+                .setMessage("You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi.")
                 .setPositiveButton("GOTCHA!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // User acknowledged the information
+                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                        editor.putBoolean(ALERT_DIALOG_SHOWN_KEY, true);
+                        editor.apply();
                     }
                 })
                 .show();
     }
+
     private void toggleNightMode() {
         isNightModeEnabled = !isNightModeEnabled;
         saveNightModeState(isNightModeEnabled);
@@ -366,14 +381,17 @@ public class MainActivity extends AppCompatActivity {
         }
         recreate(); // Recreate the activity to apply the new night mode
     }
+
     private void setStatusBarColor(int color) {
         getWindow().setStatusBarColor(color);
     }
+
     private void saveNightModeState(boolean isEnabled) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(NIGHT_MODE_KEY, isEnabled);
         editor.apply();
     }
+
     private void toggleSecondaryFabs() {
         if (isSecondaryFabOpen) {
             updateApp.animate()
@@ -396,6 +414,7 @@ public class MainActivity extends AppCompatActivity {
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
     }
+
     private void animateSecondaryFabsIn(View view) {
         view.setVisibility(View.VISIBLE);
         view.setAlpha(0f);
@@ -420,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
                 .withEndAction(() -> view.setVisibility(View.GONE))
                 .start();
     }
+
     private void showNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // Create a notification channel for Android Oreo and above
@@ -439,27 +459,31 @@ public class MainActivity extends AppCompatActivity {
                         .setBigContentTitle("Re-apply Live Wallpaper 🌄")
                         .bigText("Re-add Widget to refresh it 🥂"))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setAutoCancel(false);
+                .setAutoCancel(false);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
+
     private void startCountdownService() {
         Intent serviceIntent = new Intent(this, CountdownService.class);
         startService(serviceIntent);
     }
+
     private boolean hasWriteExternalStoragePermission() {
         // Check if the app has write external storage permission
-        return ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestWriteExternalStoragePermission() {
         // Request write external storage permission
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
     }
+
     private void requestWriteExternalStoragePermissionApk() {
         // Request write external storage permission
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -468,13 +492,11 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, perform the operation to read the online text file
                 performReadTextFile();
-            }
-            else {
+            } else {
                 // Permission denied, show a message or take appropriate action
                 Snackbar.make(updateApp, "Permission denied, cannot update 😔", Snackbar.LENGTH_LONG).show();
             }
-        }
-        else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK) { // Check if the permission was granted
+        } else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK) { // Check if the permission was granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, perform the operation to save the apk
                 saveApkToInternal();
@@ -510,6 +532,7 @@ public class MainActivity extends AppCompatActivity {
                 .start();
         toggleSecondaryFabs();
     }
+
     private void performReadTextFile() {
         // Create a new thread to perform the file reading task
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -534,27 +557,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private class ReadTextFileTask implements Callable<String> {
 
-        @Override
-        public String call() {
-            String result = "";
-            HttpURLConnection urlConnection = null;
-            try {
-                URL url = new URL(TEXT_FILE_URL);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = urlConnection.getInputStream();
-                result = readStream(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-            return result;
-        }
-    }
     private String readStream(InputStream inputStream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
@@ -570,15 +573,15 @@ public class MainActivity extends AppCompatActivity {
         if (containsNumberGreaterThanZero(result)) {
             initiateApkDownload();
 
-        }
-        else {
+        } else {
             Snackbar snackbar = Snackbar.make(updateApp, "Already on the latest version - duh 🤷‍♂️", Snackbar.LENGTH_SHORT);
             snackbar.show();
         }
     }
+
     private void initiateApkDownload() {
-    // Create a download request for the APK file
-    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
+        // Create a download request for the APK file
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
         request.setTitle("New-Update.apk");
         request.setDescription("Smile 🙂");
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "New-Update.apk");
@@ -588,8 +591,9 @@ public class MainActivity extends AppCompatActivity {
         if (downloadManager != null) {
             downloadManager.enqueue(request);
             new FetchTextTask().execute(UPDATE_CHANGELOG);
+        }
     }
-}
+
     private void displayTextInDialog(String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("What's New in Anumi")
@@ -613,19 +617,68 @@ public class MainActivity extends AppCompatActivity {
         firstDialog = builder.create();
         firstDialog.show();
     }
+
     private void showSecondDialog() {
         long[] pattern = {0, 100, 100, 100, 200, 100};
         if (vibrator != null && vibrator.hasVibrator()) {
             vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
         }
-            AlertDialog.Builder secondD = new AlertDialog.Builder(this);
-            secondD.setTitle("Here's how to update")
-                    .setMessage("Open your phone's 'File Manager' go to 'Downloads' folder, install the file named New-Update!\n\nYou're Done!🥂")
-                    .setIcon(R.drawable.how_to_update)
-                    .setPositiveButton("OKAY!", (dialog, which) -> {
-                    })
-                    .show();
+        AlertDialog.Builder secondD = new AlertDialog.Builder(this);
+        secondD.setTitle("Here's how to update")
+                .setMessage("Open your phone's 'File Manager' go to 'Downloads' folder, install the file named New-Update!\n\nYou're Done!🥂")
+                .setIcon(R.drawable.how_to_update)
+                .setPositiveButton("OKAY!", (dialog, which) -> {
+                })
+                .show();
+    }
+
+    private boolean containsNumberGreaterThanZero(String text) {
+        // This method checks if the provided text contains any number greater than 0
+        // You can modify this method based on the structure of your online text file
+        // For this example, we'll check for any numeric value greater than 0
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            int value = Integer.parseInt(matcher.group());
+            if (value > 3) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+            return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+        }
+        return false;
+    }
+
+    private class ReadTextFileTask implements Callable<String> {
+
+        @Override
+        public String call() {
+            String result = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(TEXT_FILE_URL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = urlConnection.getInputStream();
+                result = readStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return result;
+        }
+    }
 
     private class FetchTextTask extends AsyncTask<String, Void, String> {
         @Override
@@ -646,6 +699,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return result;
         }
+
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -656,6 +710,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Failed to Fetch What's New", Toast.LENGTH_SHORT).show();
             }
         }
+
         private String readChangelog(InputStream inputStream) throws IOException {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder stringBuilder = new StringBuilder();
@@ -666,29 +721,5 @@ public class MainActivity extends AppCompatActivity {
             reader.close();
             return stringBuilder.toString();
         }
-    }
-    private boolean containsNumberGreaterThanZero(String text) {
-        // This method checks if the provided text contains any number greater than 0
-        // You can modify this method based on the structure of your online text file
-        // For this example, we'll check for any numeric value greater than 0
-        Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            int value = Integer.parseInt(matcher.group());
-            if (value > 3) {
-                return true;
-            }
-        }
-        return false;
-    }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
-            return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
-        }
-        return false;
     }
 }
