@@ -6,6 +6,7 @@ import static com.onesilicondiode.anumi.LockApp.APP_LOCK;
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
+    private FloatingActionButton secondaryFab4;
     private AlertDialog firstDialog;
     public static final String UI_PREF = "night_mode_preference";
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
+        secondaryFab4 = findViewById(R.id.secondaryFab4);
         if (!sharedPrefs.getBoolean(WALLPAPER_NOTIF, false)) {
             // Show the notification here
             showNotification();
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         secondaryFab1.setVisibility(View.GONE);
                         secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
+                        secondaryFab4.setVisibility(View.GONE);
                     }
                 });
 
@@ -151,6 +155,14 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab3.setOnClickListener(view -> {
             // Perform action for secondaryFab3
             goToLock();
+        });
+        secondaryFab4.setOnClickListener(view -> {
+            // Perform action for secondaryFab4
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.onesilicondiode.store", "com.onesilicondiode.store.SplashScreen"));
+            intent.putExtra("key_from_my_app", "fromAnumi");
+            startActivity(intent);
+            finish();
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -302,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsOut(secondaryFab1);
             animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
+            animateSecondaryFabsOut(secondaryFab4);
         } else {
             updateApp.animate()
                     .rotation(180)
@@ -310,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsIn(secondaryFab1);
             animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
+            animateSecondaryFabsIn(secondaryFab4);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
     }
