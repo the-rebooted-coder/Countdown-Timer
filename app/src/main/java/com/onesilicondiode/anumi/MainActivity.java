@@ -11,12 +11,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -44,6 +46,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK = 121;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
@@ -81,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
+    String targetPackageName = "com.onesilicondiode.store";
+
     private static final int REQUEST_CALL_PERMISSION = 12;
 
     @Override
@@ -158,11 +165,21 @@ public class MainActivity extends AppCompatActivity {
         });
         secondaryFab4.setOnClickListener(view -> {
             // Perform action for secondaryFab4
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName("com.onesilicondiode.store", "com.onesilicondiode.store.SplashScreen"));
-            intent.putExtra("key_from_my_app", "fromAnumi");
-            startActivity(intent);
-            finish();
+            if (isAppInstalled(targetPackageName)) {
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName("com.onesilicondiode.store", "com.onesilicondiode.store.SplashScreen"));
+                intent.putExtra("key_from_my_app", "fromAnumi");
+                startActivity(intent);
+                finish();
+            } else {
+                if (hasWriteExternalStoragePermission()) {
+                    saveApkToInternal();
+                } else {
+                    // Permission not granted, request it
+                    requestWriteExternalStoragePermissionApk();
+                }
+
+            }
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -219,6 +236,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void saveApkToInternal() {
+        InputStream inputStream = getResources().openRawResource(R.raw.store);
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Companion App Required to Proceed ⚠️")
+                .setMessage("To use the extended funtionality of Anumi, you will need to have the 'Store' app installed on your device, press the 'SAVE' button to save the file")
+                .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                            // Specify the destination file
+                            File outputFile = new File(downloadDir, "Store.apk");
+
+                            // Copy the APK file from resources/assets to the Download directory
+                            FileOutputStream outputStream = new FileOutputStream(outputFile);
+                            byte[] buffer = new byte[1024];
+                            int read;
+                            while ((read = inputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, read);
+                            }
+                            outputStream.close();
+                            inputStream.close();
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Companion App Saved 🎉!")
+                                    .setMessage("The APK has been saved to your Downloads Folder, simply install it.\n\nOpen 'Store' to know what it does 👀")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
+                                    .show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            // Handle any exceptions that may occur during file copy
+                        }
+                    }
+                })
+                .show();
+    }
+
     private void goToLock() {
         long[] pattern = {0, 100, 100, 100, 200, 100};
         if (vibrator != null && vibrator.hasVibrator()) {
@@ -230,6 +286,19 @@ public class MainActivity extends AppCompatActivity {
         Intent toLock = new Intent(MainActivity.this,LockApp.class);
         startActivity(toLock);
         finish();
+    }
+    private boolean isAppInstalled(String packageName) {
+        PackageManager pm = getPackageManager();
+        try {
+            // Attempt to get the application info of the target app
+            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
+
+            // If the appInfo is not null, the app is installed
+            return appInfo != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            // The app is not installed
+            return false;
+        }
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -387,6 +456,10 @@ public class MainActivity extends AppCompatActivity {
         // Request write external storage permission
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
     }
+    private void requestWriteExternalStoragePermissionApk() {
+        // Request write external storage permission
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -395,9 +468,19 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, perform the operation to read the online text file
                 performReadTextFile();
-            } else {
+            }
+            else {
                 // Permission denied, show a message or take appropriate action
                 Snackbar.make(updateApp, "Permission denied, cannot update 😔", Snackbar.LENGTH_LONG).show();
+            }
+        }
+        else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK) { // Check if the permission was granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, perform the operation to save the apk
+                saveApkToInternal();
+            } else {
+                // Permission denied, show a message or take appropriate action
+                Snackbar.make(updateApp, "Permission denied, cannot save companion app 😔", Snackbar.LENGTH_LONG).show();
             }
         }
     }
