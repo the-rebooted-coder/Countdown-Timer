@@ -4,10 +4,55 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="@font/psb"
+        android:textSize="15sp"
+        android:text="Welcome 'Store'👋"/>
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="@font/psb"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:text="You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi."/>
     <ImageView
         android:id="@+id/infoImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/unlocked_store" />
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/psb"
+        android:textSize="15sp"
+        android:text="Home Friendly Icon 🏠"/>
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="@font/psb"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:text="A new, icon, to make Anumi less eye-obvious."/>
+    <ImageView
+        android:id="@+id/infoImageView2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/new_icon_dics" />
 </LinearLayout>

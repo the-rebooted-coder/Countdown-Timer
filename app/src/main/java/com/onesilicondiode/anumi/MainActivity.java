@@ -66,6 +66,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     public static final String UI_PREF = "night_mode_preference";
+    public static final String STORE_DIALOGE = "show_store_dialog";
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK = 121;
@@ -89,34 +90,25 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
-    private SharedPreferences sharedPrefs;
+    private SharedPreferences alertBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPrefs = getSharedPreferences(WALLPAPER_NOTIF_SHOWN, Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
+        alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
+        boolean isDialogShown = alertBuilder.getBoolean(ALERT_DIALOG_SHOWN_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
         secondaryFab4 = findViewById(R.id.secondaryFab4);
-        boolean alertDialogShown = sharedPrefs.getBoolean(ALERT_DIALOG_SHOWN_KEY, false);
         if (isAppInstalled(targetPackageName)) {
-            if (!alertDialogShown) {
+            if (!isDialogShown) {
                 showInfoAlertDialog();
             }
-        }
-        if (!sharedPrefs.getBoolean(WALLPAPER_NOTIF, false)) {
-            // Show the notification here
-            showNotification();
-            showInfoAlertDialog();
-            // Set the flag to indicate that the notification has been shown
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putBoolean(WALLPAPER_NOTIF, true);
-            editor.apply();
         }
         setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         secondaryFab1.setOnClickListener(view -> {
@@ -356,13 +348,13 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
-                .setTitle("Welcome 'Store'👋")
+            //    .setTitle("Welcome 'Store'👋")
                 .setCancelable(false)
-                .setMessage("You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi.")
+            //    .setMessage("You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi.")
                 .setPositiveButton("GOTCHA!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                        SharedPreferences.Editor editor = alertBuilder.edit();
                         editor.putBoolean(ALERT_DIALOG_SHOWN_KEY, true);
                         editor.apply();
                     }
@@ -640,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 3) {
+            if (value > 4) {
                 return true;
             }
         }
