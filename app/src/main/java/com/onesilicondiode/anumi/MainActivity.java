@@ -573,17 +573,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiateApkDownload() {
         // Create a download request for the APK file
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(APK_DOWNLOAD_URL));
-        request.setTitle("New-Update.apk");
-        request.setDescription("Smile 🙂");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "New-Update.apk");
-
-        // Get the download service and enqueue the download request
-        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        if (downloadManager != null) {
-            downloadManager.enqueue(request);
-            new FetchTextTask().execute(UPDATE_CHANGELOG);
-        }
+        DownloadManager downloadManager = (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(APK_DOWNLOAD_URL);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setTitle("Anumi Update");
+        request.setDescription("Please Wait...");
+        File destinationDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Anumi");
+        destinationDirectory.mkdirs();
+        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Anumi-Update.apk")));
+        downloadManager.enqueue(request);
+        Toast.makeText(this, "Download started, check notification for progress 🚀", Toast.LENGTH_LONG).show();
+        downloadManager.enqueue(request);
+        new FetchTextTask().execute(UPDATE_CHANGELOG);
     }
 
     private void displayTextInDialog(String text) {
@@ -617,7 +619,7 @@ public class MainActivity extends AppCompatActivity {
         }
         AlertDialog.Builder secondD = new AlertDialog.Builder(this);
         secondD.setTitle("Here's how to update")
-                .setMessage("Open your phone's 'File Manager' go to 'Downloads' folder, install the file named New-Update!\n\nYou're Done!🥂")
+                .setMessage("Open your phone's 'File Manager' go to 'Anumi' folder inside 'Downloads', install the file named Anumi-Update!\n\nYou're Done!🥂")
                 .setIcon(R.drawable.how_to_update)
                 .setPositiveButton("OKAY!", (dialog, which) -> {
                 })
