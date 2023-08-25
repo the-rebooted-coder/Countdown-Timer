@@ -1,7 +1,11 @@
 Welcome to Version: Jalpari 💦.
-1. Say hello to 'Store' another standalone one-of-a-kind app 👋.
-2. The app icon has been changed so as to avoid hassles when you reach home 🏠.
-3. The widget space is utilized more efficiently and looks better now 🥂.
 
-REMEMBER: Remove and re-add the widget to make it work.
+1. Say hello to 'Store' another standalone one-of-a-kind app 👋.
+2. The app icon has been changed so as to avoid hassles when you travel home 🏠.
+3. The widget space is utilized more efficiently and looks better now 🥂.
+4. Bugs have been found and crushed 🐛.
+5. The Live-Wallpaper is now more battery friendly 🔋.
+6. Buttons have been replaced, making them easier to reach within app ✅.
+
+REMEMBER: Remove and re-add the widget for changes to take effect.
 You might need to set the live wallpaper again.
