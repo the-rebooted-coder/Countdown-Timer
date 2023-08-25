@@ -44,7 +44,7 @@
         android:clickable="true"
         android:contentDescription="@string/app_update_button_fab"
         android:elevation="6dp"
-        android:src="@drawable/update_icon"
+        android:src="@drawable/upgrade_24"
         android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
