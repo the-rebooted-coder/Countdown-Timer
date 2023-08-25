@@ -5,7 +5,7 @@ Welcome to Version: Jalpari 💦.
 3. The widget space is utilized more efficiently and looks better now 🥂.
 4. Bugs have been found and crushed 🐛.
 5. The Live-Wallpaper is now more battery friendly 🔋.
-6. Buttons have been replaced, making them easier to reach within app ✅.
+6. Buttons have been re-arranged, making them easier to reach within app ✅.
 
 REMEMBER: Remove and re-add the widget for changes to take effect.
 You might need to set the live wallpaper again.
