@@ -632,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 4) {
+            if (value > 5) {
                 return true;
             }
         }
