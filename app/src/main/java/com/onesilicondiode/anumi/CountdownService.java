@@ -54,9 +54,7 @@ public class CountdownService  extends Service {
     public void onCreate() {
         super.onCreate();
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel();
-        }
+        createNotificationChannel();
         startCountdown();
         scheduleMidnightUpdate();
     }

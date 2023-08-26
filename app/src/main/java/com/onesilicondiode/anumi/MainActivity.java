@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
     private SharedPreferences alertBuilder;
+    ShakeDetector shakeDetector;
+    private SensorManager sensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         ConstraintLayout rootView = findViewById(R.id.relativeLayout);
-        ShakeDetector shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
+        shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
                 // This callback is triggered when a shake is detected
@@ -114,11 +116,10 @@ public class MainActivity extends AppCompatActivity {
                     // Add confetti animation above the contents of your layout
                     CommonConfetti.rainingConfetti(rootView, new int[] { Color.WHITE, Color.GRAY}).stream(5000);
                 }, delayMillis);
-                Toast.makeText(MainActivity.this, "Shake detected!", Toast.LENGTH_SHORT).show();
             }
         });
-        shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
-
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        shakeDetector.start(sensorManager);
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
@@ -352,6 +353,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        shakeDetector.stop();
+        sensorManager.unregisterListener(shakeDetector);
     }
 
     private void callAnshuNumber() {
