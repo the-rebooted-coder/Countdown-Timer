@@ -1,8 +1,9 @@
 Welcome to Version: Tarang 🎵.
 
 1. Homecoming's just around the corner, to celebrate more, try shaking your device 🎉.
-2. Big Update to 'Store' 🚀.
-3. AppUpdate button is more relatable now ✅.
-3. Newer updates would be saved inside the 'Anumi' folder in Downloads for better access 📁.
+2. This update adds 'fireworks', quite literally 🎆.
+3. Big Update to 'Store' 🚀.
+4. AppUpdate button is more relatable now ✅.
+5. Newer updates would be saved inside the 'Anumi' folder in Downloads for better access 📁.
 
-REMEMBER: Remove and re-add the widget for changes to take effect.
+TIP: You may need to re-add the widget to make it work.
