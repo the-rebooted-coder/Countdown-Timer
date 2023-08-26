@@ -109,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
         shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
-                // This callback is triggered when a shake is detected
-                // You can perform your desired action here
+                mimicShake();
                 long delayMillis = 100; // 5 seconds
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     // Add confetti animation above the contents of your layout
@@ -256,6 +255,15 @@ public class MainActivity extends AppCompatActivity {
                     countdownTextView.setText("Homecoming 🏠!");
                 }
             }.start();
+        }
+    }
+    private void mimicShake() {
+        // Define the vibration pattern (two short vibrations)
+        long[] pattern = {0, 100, 200, 100};
+
+        // Vibrate with the defined pattern
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
         }
     }
     private void saveApkToInternal() {
