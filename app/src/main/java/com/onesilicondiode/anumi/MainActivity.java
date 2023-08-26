@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -48,6 +49,7 @@ import androidx.core.content.ContextCompat;
 import com.github.jinatonic.confetti.CommonConfetti;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.seismic.ShakeDetector;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -102,11 +104,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         ConstraintLayout rootView = findViewById(R.id.relativeLayout);
-        long delayMillis = 100; // 5 seconds
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Add confetti animation above the contents of your layout
-            CommonConfetti.rainingConfetti(rootView, new int[] { Color.WHITE, Color.GRAY}).stream(5000);
-        }, delayMillis);
+        ShakeDetector shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
+            @Override
+            public void hearShake() {
+                // This callback is triggered when a shake is detected
+                // You can perform your desired action here
+                long delayMillis = 100; // 5 seconds
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    // Add confetti animation above the contents of your layout
+                    CommonConfetti.rainingConfetti(rootView, new int[] { Color.WHITE, Color.GRAY}).stream(5000);
+                }, delayMillis);
+                Toast.makeText(MainActivity.this, "Shake detected!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        shakeDetector.start((SensorManager) getSystemService(Context.SENSOR_SERVICE));
+
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
