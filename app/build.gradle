@@ -12,7 +12,7 @@ android {
         minSdk 26
         targetSdk 33
         versionCode 8
-        versionName "Jalpari 💦"
+        versionName "Tarang 🎵"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,4 +41,5 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.4.0"
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    implementation 'com.github.jinatonic.confetti:confetti:1.0.0'
 }

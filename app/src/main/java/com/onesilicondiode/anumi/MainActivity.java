@@ -13,15 +13,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.KeyEvent;
@@ -38,10 +40,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.github.jinatonic.confetti.CommonConfetti;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -97,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
+        ConstraintLayout rootView = findViewById(R.id.relativeLayout);
+        long delayMillis = 100; // 5 seconds
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Add confetti animation above the contents of your layout
+            CommonConfetti.rainingConfetti(rootView, new int[] { Color.WHITE, Color.GRAY}).stream(5000);
+        }, delayMillis);
         sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
         isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
@@ -235,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
             }.start();
         }
     }
-
     private void saveApkToInternal() {
         InputStream inputStream = getResources().openRawResource(R.raw.store);
         new AlertDialog.Builder(MainActivity.this)
@@ -584,7 +593,6 @@ public class MainActivity extends AppCompatActivity {
         request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Anumi-Update.apk")));
         downloadManager.enqueue(request);
         Toast.makeText(this, "Download started, check notification for progress 🚀", Toast.LENGTH_LONG).show();
-        downloadManager.enqueue(request);
         new FetchTextTask().execute(UPDATE_CHANGELOG);
     }
 
@@ -618,7 +626,7 @@ public class MainActivity extends AppCompatActivity {
             vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
         }
         AlertDialog.Builder secondD = new AlertDialog.Builder(this);
-        secondD.setTitle("Here's how to update")
+        secondD.setTitle("How to update ⚒️")
                 .setMessage("Open your phone's 'File Manager' go to 'Anumi' folder inside 'Downloads', install the file named Anumi-Update!\n\nYou're Done!🥂")
                 .setIcon(R.drawable.how_to_update)
                 .setPositiveButton("OKAY!", (dialog, which) -> {
@@ -634,7 +642,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 5) {
+            if (value > 6) {
                 return true;
             }
         }

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/backdrop"
     tools:context=".MainActivity">
+
     <TextView
         android:id="@+id/countdownTextView"
         android:layout_width="274dp"
@@ -20,32 +21,33 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123"/>
+        app:layout_constraintVertical_bias="0.123" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/updateApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:elevation="30dp"
-        android:backgroundTint="#FFDEDE"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="50dp"
+        android:backgroundTint="#FFDEDE"
+        android:clickable="true"
         android:contentDescription="@string/app_update_button"
-        app:maxImageSize="35dp"
-        android:src="@drawable/new_update" />
+        android:elevation="30dp"
+        android:src="@drawable/new_update"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="35dp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/secondaryFab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="190dp"
+        android:backgroundTint="#FFDEDE"
         android:clickable="true"
         android:contentDescription="@string/app_update_button_fab"
         android:elevation="6dp"
         android:src="@drawable/upgrade_24"
-        android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,40 +59,42 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="120dp"
+        android:backgroundTint="#FFDEDE"
         android:clickable="true"
         android:contentDescription="@string/app_appearance_fab"
         android:elevation="6dp"
         android:src="@drawable/light_mode"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:backgroundTint="#FFDEDE"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/secondaryFab3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="260dp"
+        android:backgroundTint="#FFDEDE"
         android:clickable="true"
         android:contentDescription="@string/app_appearance_fab"
         android:elevation="6dp"
         android:src="@drawable/lock"
-        android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/secondaryFab4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="330dp"
+        android:backgroundTint="#FFDEDE"
         android:clickable="true"
         android:elevation="6dp"
         android:src="@drawable/store"
-        android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

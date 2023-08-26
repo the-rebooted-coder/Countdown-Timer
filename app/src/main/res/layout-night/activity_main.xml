@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="#0e0e0e"
     tools:context=".MainActivity">
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
         android:layout_width="match_parent"
@@ -19,7 +18,6 @@
         app:lottie_autoPlay="true"
         app:lottie_fileName="background_anim.json"
         app:lottie_loop="true" />
-
     <TextView
         android:id="@+id/countdownTextView"
         android:layout_width="wrap_content"
