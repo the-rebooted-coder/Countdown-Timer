@@ -70,7 +70,7 @@ public class Credits extends AppCompatActivity {
                 @Override
                 public void run() {
                     scrollView.setVisibility(View.GONE);
-                    Toast.makeText(Credits.this, "Press Volume Down Anytime to Close Fireworks", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Credits.this, "Press Volume Up Anytime to Close Fireworks", Toast.LENGTH_LONG).show();
                     // Show and start the Lottie animations
                     fireworksView1.setVisibility(View.VISIBLE);
                     fireworksView2.setVisibility(View.VISIBLE);
@@ -87,25 +87,23 @@ public class Credits extends AppCompatActivity {
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             Intent intent = new Intent(Credits.this, MainActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
     private void autoScrollText() {
         int scrollDelay = 30;
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isScrolling) {
-                    int scrollY = scrollView.getScrollY();
-                    int scrollHeight = creditsTextView.getHeight();
-                    if (scrollY < scrollHeight) {
-                        scrollView.scrollTo(0, scrollY + scrollSpeed);
-                        autoScrollText();
-                    }
+        handler.postDelayed(() -> {
+            if (isScrolling) {
+                int scrollY = scrollView.getScrollY();
+                int scrollHeight = creditsTextView.getHeight();
+                if (scrollY < scrollHeight) {
+                    scrollView.scrollTo(0, scrollY + scrollSpeed);
+                    autoScrollText();
                 }
             }
         }, scrollDelay);
