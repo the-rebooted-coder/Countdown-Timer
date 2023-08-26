@@ -25,7 +25,7 @@ public class LaunchScreen extends AppCompatActivity {
         }
         setContentView(R.layout.activity_launch_screen);
         new Handler().postDelayed(() -> {
-            Intent toLanding = new Intent(this, Credits.class);
+            Intent toLanding = new Intent(this, LockScreen.class);
             startActivity(toLanding);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();

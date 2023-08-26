@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private FloatingActionButton secondaryFab4;
+    private FloatingActionButton secondaryFab5;
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         ConstraintLayout rootView = findViewById(R.id.relativeLayout);
+        Toast.makeText(this,"Try shaking your phone Bhumi 👀",Toast.LENGTH_SHORT).show();
         shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
         secondaryFab4 = findViewById(R.id.secondaryFab4);
+        secondaryFab5 = findViewById(R.id.secondaryFab5);
         if (isAppInstalled(targetPackageName)) {
             if (!isDialogShown) {
                 showInfoAlertDialog();
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                         secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
                         secondaryFab4.setVisibility(View.GONE);
+                        secondaryFab5.setVisibility(View.GONE);
                     }
                 });
 
@@ -202,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
+        });
+        secondaryFab5.setOnClickListener(view -> {
+            // Perform action for secondaryFab5
+            Intent toCredits = new Intent(MainActivity.this,Credits.class);
+            startActivity(toCredits);
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -431,6 +440,7 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
             animateSecondaryFabsOut(secondaryFab4);
+            animateSecondaryFabsOut(secondaryFab5);
         } else {
             updateApp.animate()
                     .rotation(180)
@@ -440,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
             animateSecondaryFabsIn(secondaryFab4);
+            animateSecondaryFabsIn(secondaryFab5);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
     }

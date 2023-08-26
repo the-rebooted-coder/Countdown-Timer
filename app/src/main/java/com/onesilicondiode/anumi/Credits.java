@@ -1,7 +1,11 @@
 package com.onesilicondiode.anumi;
 
+import static com.onesilicondiode.anumi.LockApp.CREDIT_ROLL;
+import static com.onesilicondiode.anumi.LockApp.FIRST_TIME_OPEN;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,6 +92,8 @@ public class Credits extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            SharedPreferences preferences = getSharedPreferences(CREDIT_ROLL, MODE_PRIVATE);
+            preferences.edit().putBoolean(FIRST_TIME_OPEN, false).apply();
             Intent intent = new Intent(Credits.this, MainActivity.class);
             startActivity(intent);
             finish();

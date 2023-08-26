@@ -2,16 +2,14 @@ package com.onesilicondiode.anumi;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,7 +19,6 @@ import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.security.KeyStore;
 
@@ -31,13 +28,20 @@ import javax.crypto.SecretKey;
 
 
 public class LockApp extends AppCompatActivity {
+    public static final String APP_LOCK = "lockedApp";
+    public static final String CREDIT_ROLL = "rollCredits";
+    public static final String APP_IS_UNLOCKED = "appUnlocked";
+    public static final String FIRST_TIME_OPEN = "firstTimeOpen";
     private static final String CORRECT_PIN = "2908";
     private static final String KEY_NAME = "my_key_name";
-    public static final String APP_LOCK = "lockedApp";
-    public static final String APP_IS_UNLOCKED = "appUnlocked";
     private Vibrator vibrator;
     private FingerprintManagerCompat fingerprintManager;
     private MaterialButton usePinButton;
+
+    private boolean isFirstTimeOpening() {
+        SharedPreferences preferences = getSharedPreferences(CREDIT_ROLL, MODE_PRIVATE);
+        return preferences.getBoolean(FIRST_TIME_OPEN, true); // Default to true if not set
+    }
 
 
     @Override
@@ -46,22 +50,30 @@ public class LockApp extends AppCompatActivity {
         setContentView(R.layout.activity_lock_app);
         setStatusBarColor(getResources().getColor(R.color.orange));
         fingerprintManager = FingerprintManagerCompat.from(this);
-        boolean isUnlocked = getSharedPreferences(APP_LOCK, MODE_PRIVATE)
-                .getBoolean(APP_IS_UNLOCKED, false);
-        if (isUnlocked) {
-            navigateToNextScreen();
-        }
-        else{
-            if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
-                authenticateWithFingerprint();
+
+        if (isFirstTimeOpening()) {
+            // Redirect to Credits Activity
+            Intent intent = new Intent(this, Credits.class);
+            startActivity(intent);
+            finish();
+        } else {
+            boolean isUnlocked = getSharedPreferences(APP_LOCK, MODE_PRIVATE)
+                    .getBoolean(APP_IS_UNLOCKED, false);
+            if (isUnlocked) {
+                navigateToNextScreen();
             } else {
-                // Fingerprint authentication not available, use PIN as a fallback
-                authenticateWithPIN(CORRECT_PIN);
+                if (fingerprintManager.isHardwareDetected() && fingerprintManager.hasEnrolledFingerprints()) {
+                    authenticateWithFingerprint();
+                } else {
+                    // Fingerprint authentication not available, use PIN as a fallback
+                    authenticateWithPIN(CORRECT_PIN);
+                }
+                usePinButton = findViewById(R.id.btnUsePin);
+                usePinButton.setOnClickListener(v -> showPinInputDialog());
             }
-            usePinButton = findViewById(R.id.btnUsePin);
-            usePinButton.setOnClickListener(v -> showPinInputDialog());
         }
     }
+
     private void showPinInputDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_pin_input, null);
@@ -91,9 +103,11 @@ public class LockApp extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     private void shakeDialogAndShowError() {
-        Toast.makeText(this,"Uh-huh Wrong PIN 🤦‍♂️", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Uh-huh Wrong PIN 🤦‍♂️", Toast.LENGTH_SHORT).show();
     }
+
     private void authenticateWithFingerprint() {
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -139,6 +153,7 @@ public class LockApp extends AppCompatActivity {
             // Handle exception
         }
     }
+
     private void authenticateWithPIN(String enteredPIN) {
         if (enteredPIN.equals(CORRECT_PIN)) {
             // PIN authentication successful, navigate to the next screen
@@ -157,6 +172,7 @@ public class LockApp extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     private void setStatusBarColor(int color) {
         getWindow().setStatusBarColor(color);
     }
