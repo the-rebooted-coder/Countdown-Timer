@@ -29,6 +29,9 @@
         android:theme="@style/Theme.Anumi"
         tools:targetApi="31">
         <activity
+            android:name=".Credits"
+            android:exported="false" />
+        <activity
             android:name=".LockApp"
             android:exported="false" />
         <activity
@@ -42,7 +45,7 @@
         </activity>
         <activity
             android:name=".LockScreen"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <receiver
             android:name=".SampleBroadcast"
