@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                             inputStream.close();
                             new AlertDialog.Builder(MainActivity.this)
                                     .setTitle("Companion App Saved 🎉!")
-                                    .setMessage("The APK has been saved to your Downloads Folder, simply install it.\n\nOpen 'Store' to know what it does 👀")
+                                    .setMessage("The APK has been saved to your Downloads Folder, simply install it.\n\nOpen 'Store' to know what is new 👀.")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             finish();
