@@ -111,7 +111,7 @@ public class LockScreen extends AppCompatActivity {
     // Method called when the Unlock button is clicked
     public void unlockApp(View view) {
         String enteredPin = pinEditText.getText().toString();
-        if (enteredPin.equals("2908")) {
+        if (enteredPin.equals("1709")) {
             // Unlock the app and save the status
             getSharedPreferences(LOCK_UNLOCK, MODE_PRIVATE).edit()
                     .putBoolean(IS_UNLOCKED_KEY, true)

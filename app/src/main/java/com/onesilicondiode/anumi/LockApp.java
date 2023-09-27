@@ -31,7 +31,7 @@ public class LockApp extends AppCompatActivity {
     public static final String APP_LOCK = "lockedApp";
     public static final String CREDIT_ROLL = "rollCredits";
     public static final String APP_IS_UNLOCKED = "appUnlocked";
-    private static final String CORRECT_PIN = "2908";
+    private static final String CORRECT_PIN = "1709";
     private static final String KEY_NAME = "my_key_name";
     private Vibrator vibrator;
     private FingerprintManagerCompat fingerprintManager;
@@ -73,7 +73,7 @@ public class LockApp extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         TextInputEditText pinEditText = dialogView.findViewById(R.id.appUnlockPin);
                         String enteredPin = pinEditText.getText().toString();
-                        if (enteredPin.equals("2908")) {
+                        if (enteredPin.equals("1709")) {
                             navigateToNextScreen();
                         } else {
                             long[] pattern = {0, 100, 100, 100, 200, 100};

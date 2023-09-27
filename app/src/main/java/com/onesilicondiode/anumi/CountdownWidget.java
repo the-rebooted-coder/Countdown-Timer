@@ -10,12 +10,12 @@ import java.util.Calendar;
 
 public class CountdownWidget {
     public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, int currentDay) {
-        // Calculate the days remaining until 29th August
+        // Calculate the days remaining until 14th August
         Calendar today = Calendar.getInstance();
         Calendar targetDate = Calendar.getInstance();
         targetDate.set(Calendar.YEAR, 2023);
-        targetDate.set(Calendar.MONTH, Calendar.AUGUST);
-        targetDate.set(Calendar.DAY_OF_MONTH, 29);
+        targetDate.set(Calendar.MONTH, Calendar.OCTOBER);
+        targetDate.set(Calendar.DAY_OF_MONTH, 14);
         targetDate.set(Calendar.HOUR_OF_DAY, 0);
         targetDate.set(Calendar.MINUTE, 0);
         targetDate.set(Calendar.SECOND, 0);
@@ -25,14 +25,14 @@ public class CountdownWidget {
 
         String countdownMessage;
         if (daysRemaining < 1) {
-            countdownMessage = "Pack your bags";
+            countdownMessage = "Where's the Cake 🍰";
         } else if (daysRemaining == 1) {
             countdownMessage = "Just 1 to Go!";
         } else {
             countdownMessage = daysRemaining + " days left!";
         }
         if (millisUntilEnd <= 0) {
-            countdownMessage = "Happy Homecoming";
+            countdownMessage = "Happy Meowrthday 🎂!";
         }
         // Update the widget with the new countdown
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.countdown_widget_layout);
@@ -66,7 +66,7 @@ public class CountdownWidget {
                 R.drawable.day17_image,
                 R.drawable.day17_image,
                 R.drawable.day17_image,
-                R.drawable.day17_image,
+                R.drawable.day30_image,
                 R.drawable.day18_image,
                 R.drawable.day19_image,
                 R.drawable.day20_image,

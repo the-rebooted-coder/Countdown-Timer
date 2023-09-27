@@ -197,10 +197,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-
-        // Set the target date and time (30 August 2023, 12:00 AM)
         Calendar targetDate = Calendar.getInstance();
-        targetDate.set(2023, Calendar.AUGUST, 29, 0, 0, 0);
+        targetDate.set(2023, Calendar.OCTOBER, 14, 0, 0, 0);
         Calendar currentDate = Calendar.getInstance();
         long timeDifference = targetDate.getTimeInMillis() - currentDate.getTimeInMillis();
 
@@ -230,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    countdownTextView.setText("Homecoming 🏠!");
+                    countdownTextView.setText("Happy Birthday\nMeow ✨🎂!");
                 }
             }.start();
         }
