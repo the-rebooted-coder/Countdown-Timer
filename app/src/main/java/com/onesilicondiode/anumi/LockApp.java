@@ -31,17 +31,11 @@ public class LockApp extends AppCompatActivity {
     public static final String APP_LOCK = "lockedApp";
     public static final String CREDIT_ROLL = "rollCredits";
     public static final String APP_IS_UNLOCKED = "appUnlocked";
-    public static final String FIRST_TIME_OPEN = "firstTimeOpen";
     private static final String CORRECT_PIN = "2908";
     private static final String KEY_NAME = "my_key_name";
     private Vibrator vibrator;
     private FingerprintManagerCompat fingerprintManager;
     private MaterialButton usePinButton;
-
-    private boolean isFirstTimeOpening() {
-        SharedPreferences preferences = getSharedPreferences(CREDIT_ROLL, MODE_PRIVATE);
-        return preferences.getBoolean(FIRST_TIME_OPEN, true); // Default to true if not set
-    }
 
 
     @Override
@@ -49,14 +43,7 @@ public class LockApp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_app);
         setStatusBarColor(getResources().getColor(R.color.orange));
-        fingerprintManager = FingerprintManagerCompat.from(this);
-
-        if (isFirstTimeOpening()) {
-            // Redirect to Credits Activity
-            Intent intent = new Intent(this, Credits.class);
-            startActivity(intent);
-            finish();
-        } else {
+        fingerprintManager = FingerprintManagerCompat.from(this);{
             boolean isUnlocked = getSharedPreferences(APP_LOCK, MODE_PRIVATE)
                     .getBoolean(APP_IS_UNLOCKED, false);
             if (isUnlocked) {
@@ -73,7 +60,6 @@ public class LockApp extends AppCompatActivity {
             }
         }
     }
-
     private void showPinInputDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_pin_input, null);

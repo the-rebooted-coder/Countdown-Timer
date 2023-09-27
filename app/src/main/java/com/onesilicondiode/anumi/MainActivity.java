@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
-    private FloatingActionButton secondaryFab5;
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
@@ -125,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
-        secondaryFab5 = findViewById(R.id.secondaryFab5);
         if (isAppInstalled(targetPackageName)) {
             if (!isDialogShown) {
                 showInfoAlertDialog();
@@ -153,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
                         secondaryFab1.setVisibility(View.GONE);
                         secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
-                        secondaryFab5.setVisibility(View.GONE);
                     }
                 });
 
@@ -183,11 +180,6 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab3.setOnClickListener(view -> {
             // Perform action for secondaryFab3
             goToLock();
-        });
-        secondaryFab5.setOnClickListener(view -> {
-            // Perform action for secondaryFab5
-            Intent toCredits = new Intent(MainActivity.this, Credits.class);
-            startActivity(toCredits);
         });
         startCountdownService();
         TextView countdownTextView = findViewById(R.id.countdownTextView);
@@ -379,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsOut(secondaryFab1);
             animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
-            animateSecondaryFabsOut(secondaryFab5);
         } else {
             updateApp.animate()
                     .rotation(180)
@@ -388,7 +379,6 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsIn(secondaryFab1);
             animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
-            animateSecondaryFabsIn(secondaryFab5);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
     }
