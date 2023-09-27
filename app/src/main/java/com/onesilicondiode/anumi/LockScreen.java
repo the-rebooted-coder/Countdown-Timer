@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LockScreen extends AppCompatActivity {
-    private static final String LOCK_UNLOCK = "isLocked";
+    private static final String LOCK_UNLOCK = "appLocked";
     private static final String IS_UNLOCKED_KEY = "isUnlocked";
     private Vibrator vibrator;
     private TextInputEditText pinEditText;

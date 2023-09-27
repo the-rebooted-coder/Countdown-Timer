@@ -6,7 +6,6 @@ import static com.onesilicondiode.anumi.LockApp.APP_LOCK;
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,7 +52,6 @@ import com.squareup.seismic.ShakeDetector;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,19 +84,18 @@ public class MainActivity extends AppCompatActivity {
     private static final String ALERT_DIALOG_SHOWN_KEY = "alert_dialog_shown";
     private static final int REQUEST_CALL_PERMISSION = 12;
     String targetPackageName = "com.onesilicondiode.store";
+    ShakeDetector shakeDetector;
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
-    private FloatingActionButton secondaryFab4;
     private FloatingActionButton secondaryFab5;
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
     private boolean isNightModeEnabled;
     private SharedPreferences alertBuilder;
-    ShakeDetector shakeDetector;
     private SensorManager sensorManager;
 
     @Override
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         ConstraintLayout rootView = findViewById(R.id.relativeLayout);
-        Toast.makeText(this,"Try shaking your phone Bhumi 👀",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Try shaking your phone Bhumi 👀", Toast.LENGTH_SHORT).show();
         shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
@@ -115,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 long delayMillis = 100; // 5 seconds
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     // Add confetti animation above the contents of your layout
-                    CommonConfetti.rainingConfetti(rootView, new int[] { Color.WHITE, Color.GRAY}).stream(5000);
+                    CommonConfetti.rainingConfetti(rootView, new int[]{Color.WHITE, Color.GRAY}).stream(5000);
                 }, delayMillis);
             }
         });
@@ -128,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
         secondaryFab1 = findViewById(R.id.secondaryFab1);
         secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
-        secondaryFab4 = findViewById(R.id.secondaryFab4);
         secondaryFab5 = findViewById(R.id.secondaryFab5);
         if (isAppInstalled(targetPackageName)) {
             if (!isDialogShown) {
@@ -157,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                         secondaryFab1.setVisibility(View.GONE);
                         secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
-                        secondaryFab4.setVisibility(View.GONE);
                         secondaryFab5.setVisibility(View.GONE);
                     }
                 });
@@ -189,27 +184,9 @@ public class MainActivity extends AppCompatActivity {
             // Perform action for secondaryFab3
             goToLock();
         });
-        secondaryFab4.setOnClickListener(view -> {
-            // Perform action for secondaryFab4
-            if (isAppInstalled(targetPackageName)) {
-                Intent intent = new Intent();
-                intent.setComponent(new ComponentName("com.onesilicondiode.store", "com.onesilicondiode.store.SplashScreen"));
-                intent.putExtra("key_from_my_app", "fromAnumi");
-                startActivity(intent);
-                finish();
-            } else {
-                if (hasWriteExternalStoragePermission()) {
-                    saveApkToInternal();
-                } else {
-                    // Permission not granted, request it
-                    requestWriteExternalStoragePermissionApk();
-                }
-
-            }
-        });
         secondaryFab5.setOnClickListener(view -> {
             // Perform action for secondaryFab5
-            Intent toCredits = new Intent(MainActivity.this,Credits.class);
+            Intent toCredits = new Intent(MainActivity.this, Credits.class);
             startActivity(toCredits);
         });
         startCountdownService();
@@ -266,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             }.start();
         }
     }
+
     private void mimicShake() {
         // Define the vibration pattern (two short vibrations)
         long[] pattern = {0, 100, 200, 100};
@@ -274,44 +252,6 @@ public class MainActivity extends AppCompatActivity {
         if (vibrator != null && vibrator.hasVibrator()) {
             vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
         }
-    }
-    private void saveApkToInternal() {
-        InputStream inputStream = getResources().openRawResource(R.raw.store);
-        new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Companion App Required to Proceed ⚠️")
-                .setMessage("To use the extended funtionality of Anumi, you will need to have the 'Store' app installed on your device, press the 'SAVE' button to save the file")
-                .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                            // Specify the destination file
-                            File outputFile = new File(downloadDir, "Store.apk");
-
-                            // Copy the APK file from resources/assets to the Download directory
-                            FileOutputStream outputStream = new FileOutputStream(outputFile);
-                            byte[] buffer = new byte[1024];
-                            int read;
-                            while ((read = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, read);
-                            }
-                            outputStream.close();
-                            inputStream.close();
-                            new AlertDialog.Builder(MainActivity.this)
-                                    .setTitle("Companion App Saved 🎉!")
-                                    .setMessage("The APK has been saved to your Downloads Folder, simply install it.\n\nOpen 'Store' to know what is new 👀.")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    })
-                                    .show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            // Handle any exceptions that may occur during file copy
-                        }
-                    }
-                })
-                .show();
     }
 
     private void goToLock() {
@@ -390,13 +330,13 @@ public class MainActivity extends AppCompatActivity {
         ImageView infoImageView = dialogView.findViewById(R.id.infoImageView);
 
         // Set the image in the ImageView
-       // infoImageView.setImageResource(R.drawable.info_image);
+        // infoImageView.setImageResource(R.drawable.info_image);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
-            //    .setTitle("Welcome 'Store'👋")
+                //    .setTitle("Welcome 'Store'👋")
                 .setCancelable(false)
-            //    .setMessage("You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi.")
+                //    .setMessage("You can quickly access 'Store' bypassing it's lock-screen, if you open it directly from Anumi.")
                 .setPositiveButton("GOTCHA!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -439,7 +379,6 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsOut(secondaryFab1);
             animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
-            animateSecondaryFabsOut(secondaryFab4);
             animateSecondaryFabsOut(secondaryFab5);
         } else {
             updateApp.animate()
@@ -449,7 +388,6 @@ public class MainActivity extends AppCompatActivity {
             animateSecondaryFabsIn(secondaryFab1);
             animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
-            animateSecondaryFabsIn(secondaryFab4);
             animateSecondaryFabsIn(secondaryFab5);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;
@@ -535,14 +473,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Permission denied, show a message or take appropriate action
                 Snackbar.make(updateApp, "Permission denied, cannot update 😔", Snackbar.LENGTH_LONG).show();
-            }
-        } else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK) { // Check if the permission was granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, perform the operation to save the apk
-                saveApkToInternal();
-            } else {
-                // Permission denied, show a message or take appropriate action
-                Snackbar.make(updateApp, "Permission denied, cannot save companion app 😔", Snackbar.LENGTH_LONG).show();
             }
         }
     }
