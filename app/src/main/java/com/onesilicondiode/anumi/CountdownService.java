@@ -25,12 +25,11 @@ import androidx.core.content.ContextCompat;
 import java.util.Calendar;
 
 
-public class CountdownService  extends Service {
+public class CountdownService extends Service {
     private static final int NOTIFICATION_ID = 2;
     private static final String NOTIFICATION_CHANNEL_ID = "Countdown_Channel";
     private NotificationManager notificationManager;
     private CountDownTimer countdownTimer;
-
 
 
     @Nullable
@@ -38,6 +37,7 @@ public class CountdownService  extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
@@ -108,7 +108,7 @@ public class CountdownService  extends Service {
         int notificationColor = getNotificationColor(daysLeft);
         String contentText;
         if (daysLeft > 7) {
-            contentText = daysLeft + " days remaining Bhumi";
+            contentText = "Bhumi turns 18 in "+daysLeft + " days!";
         } else if (daysLeft == 7) {
             contentText = "Just a week remaining Bhumi";
         } else if (daysLeft > 1) {
@@ -116,12 +116,12 @@ public class CountdownService  extends Service {
         } else if (daysLeft == 1) {
             contentText = "24 Hours to Go.";
         } else {
-            contentText = "Pack your bags! 👜";
+            contentText = "Happy Brrrrthdayyyayyy! 👜";
         }
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Homecoming")
+                .setContentTitle("18th ✨🎂")
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_logo)
                 .setColor(notificationColor)
@@ -133,6 +133,7 @@ public class CountdownService  extends Service {
                 .build();
         startForeground(NOTIFICATION_ID, notification);
     }
+
     private int getNotificationColor(int daysLeft) {
         int colorResId;
         if (daysLeft > 9) {
@@ -161,11 +162,12 @@ public class CountdownService  extends Service {
 
         return ContextCompat.getColor(this, colorResId);
     }
+
     public void startCountdown() {
         Calendar endDate = Calendar.getInstance();
         endDate.set(Calendar.YEAR, 2023);
-        endDate.set(Calendar.MONTH, Calendar.AUGUST);
-        endDate.set(Calendar.DAY_OF_MONTH, 29);
+        endDate.set(Calendar.MONTH, Calendar.OCTOBER);
+        endDate.set(Calendar.DAY_OF_MONTH, 14);
         endDate.set(Calendar.HOUR_OF_DAY, 0);
         endDate.set(Calendar.MINUTE, 0);
         endDate.set(Calendar.SECOND, 0);
@@ -198,12 +200,13 @@ public class CountdownService  extends Service {
     public void onDestroy() {
         startCountdown();
     }
+
     @Override
     //Action that keeps service running even after removed from resents
-    public void onTaskRemoved(Intent rootIntent){
-        Intent restartServiceTask = new Intent(getApplicationContext(),this.getClass());
+    public void onTaskRemoved(Intent rootIntent) {
+        Intent restartServiceTask = new Intent(getApplicationContext(), this.getClass());
         restartServiceTask.setPackage(getPackageName());
-        PendingIntent restartPendingIntent =PendingIntent.getService(getApplicationContext(), 1,restartServiceTask, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
+        PendingIntent restartPendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceTask, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
         AlarmManager myAlarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         myAlarmService.set(
                 AlarmManager.ELAPSED_REALTIME,

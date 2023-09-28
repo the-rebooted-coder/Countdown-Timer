@@ -21,7 +21,7 @@ public class CountdownWidget {
         targetDate.set(Calendar.SECOND, 0);
         targetDate.set(Calendar.MILLISECOND, 0);
 
-        // Get the image resource based on the current day and target date
+        // Calculate the image resource index based on the current date and target date
         int imageResource = getImageResourceId(today, targetDate);
 
         // Calculate the days remaining
@@ -56,14 +56,7 @@ public class CountdownWidget {
 
     private static int getImageResourceId(Calendar today, Calendar targetDate) {
         // Calculate the number of days remaining
-        Calendar endOfDay = Calendar.getInstance();
-        endOfDay.setTime(targetDate.getTime());
-        endOfDay.set(Calendar.HOUR_OF_DAY, 23);
-        endOfDay.set(Calendar.MINUTE, 59);
-        endOfDay.set(Calendar.SECOND, 59);
-        endOfDay.set(Calendar.MILLISECOND, 999);
-
-        long millisUntilEnd = endOfDay.getTimeInMillis() - today.getTimeInMillis();
+        long millisUntilEnd = targetDate.getTimeInMillis() - today.getTimeInMillis();
         int daysRemaining = (int) (millisUntilEnd / (24 * 60 * 60 * 1000));
 
         // Define image resources for each day
@@ -86,13 +79,13 @@ public class CountdownWidget {
                 R.drawable.day13_image,
                 R.drawable.day14_image, // 14th Oct
         };
-        // Calculate the index of the image based on days remaining
-        int imageIndex = daysRemaining - 1; // Adjust for 0-based index
-
-        if (imageIndex >= 0 && imageIndex < imageResources.length) {
-            return imageResources[imageIndex];
+        // Ensure the image index is within the valid range
+        if (daysRemaining < 0) {
+            return imageResources[0]; // Use the first image for days passed
+        } else if (daysRemaining >= imageResources.length) {
+            return imageResources[imageResources.length - 1]; // Use the last image for future days
         } else {
-            return R.drawable.day29_image; // Use a default image resource ID
+            return imageResources[daysRemaining];
         }
     }
 }
