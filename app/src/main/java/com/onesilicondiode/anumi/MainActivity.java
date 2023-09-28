@@ -67,6 +67,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import chihane.starrysky.StarMaker;
+import chihane.starrysky.StarrySky;
+
 
 public class MainActivity extends AppCompatActivity {
     public static final String UI_PREF = "night_mode_preference";
@@ -83,19 +86,30 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 1;
     private static final String ALERT_DIALOG_SHOWN_KEY = "alert_dialog_shown";
     private static final int REQUEST_CALL_PERMISSION = 12;
+    private static final int MORNING_START_HOUR = 6;
+    private static final int MORNING_END_HOUR = 11;
+    private static final int AFTERNOON_START_HOUR = 12;
+    private static final int AFTERNOON_END_HOUR = 17;
+    private static final int EVENING_START_HOUR = 18;
+    private static final int EVENING_END_HOUR = 23;
+    private static final int NIGHT_START_HOUR = 0;  // Midnight
+    private static final int NIGHT_END_HOUR = 5;
     String targetPackageName = "com.onesilicondiode.store";
     ShakeDetector shakeDetector;
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
-    private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
-    private boolean isNightModeEnabled;
     private SharedPreferences alertBuilder;
     private SensorManager sensorManager;
+    private int seed = 124;
+    private float density = 0.75f;
+    private int baseMagnitude = 0;
+    private int magnitudeAmplitude = 9;
+    private StarrySky sky;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +128,51 @@ public class MainActivity extends AppCompatActivity {
                 }, delayMillis);
             }
         });
+        sky = (StarrySky) findViewById(R.id.starrySky);
+        Calendar currentTime = Calendar.getInstance();
+        int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+        if (currentHour >= MORNING_START_HOUR && currentHour < MORNING_END_HOUR) {
+            // It's morning, perform morning-related actions
+            sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_DAWN);
+            StarMaker starMaker = StarMaker.with(this)
+                    .seed(seed)
+                    .density(density)
+                    .baseMagnitude(baseMagnitude)
+                    .magnitudeAmplitude(magnitudeAmplitude)
+                    .createGiantStar()
+                    .starTwinkles();
+            sky.dominateBy(starMaker);
+        } else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
+            // It's afternoon, perform afternoon-related actions
+            //TODO Add Morning Actions
+        } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
+            // It's evening, perform evening-related actions
+            sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_DUSK);
+            StarMaker starMaker = StarMaker.with(this)
+                    .seed(seed)
+                    .density(density)
+                    .baseMagnitude(baseMagnitude)
+                    .magnitudeAmplitude(magnitudeAmplitude)
+                    .createGiantStar()
+                    .starTwinkles();
+            sky.dominateBy(starMaker);
+        } else {
+            // It's night, perform night-related actions
+            sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_MIDNIGHT);
+            StarMaker starMaker = StarMaker.with(this)
+                    .seed(seed)
+                    .density(density)
+                    .baseMagnitude(baseMagnitude)
+                    .magnitudeAmplitude(magnitudeAmplitude)
+                    .createGiantStar()
+                    .starTwinkles();
+            sky.dominateBy(starMaker);
+        }
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         shakeDetector.start(sensorManager);
-        sharedPreferences = getSharedPreferences(UI_PREF, MODE_PRIVATE);
-        isNightModeEnabled = sharedPreferences.getBoolean(NIGHT_MODE_KEY, false);
         alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
         boolean isDialogShown = alertBuilder.getBoolean(ALERT_DIALOG_SHOWN_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
-        secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
         if (isAppInstalled(targetPackageName)) {
             if (!isDialogShown) {
@@ -148,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         secondaryFab1.setVisibility(View.GONE);
-                        secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
                     }
                 });
@@ -167,15 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
             }
         });
-
-        secondaryFab2.setOnClickListener(view -> {
-            // Perform action for secondaryFab2
-            long[] pattern = {0, 100, 100, 100, 200, 100};
-            if (vibrator != null && vibrator.hasVibrator()) {
-                vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
-            }
-            toggleNightMode();
-        });
         secondaryFab3.setOnClickListener(view -> {
             // Perform action for secondaryFab3
             goToLock();
@@ -190,12 +231,6 @@ public class MainActivity extends AppCompatActivity {
                 handleFabClick(view);
             }
         });
-        // Set initial night mode state
-        if (isNightModeEnabled) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
         Calendar targetDate = Calendar.getInstance();
         targetDate.set(2023, Calendar.OCTOBER, 14, 0, 0, 0);
         Calendar currentDate = Calendar.getInstance();
@@ -336,19 +371,6 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
-    private void toggleNightMode() {
-        isNightModeEnabled = !isNightModeEnabled;
-        saveNightModeState(isNightModeEnabled);
-
-        if (isNightModeEnabled) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        recreate(); // Recreate the activity to apply the new night mode
-    }
-
     private void setStatusBarColor(int color) {
         getWindow().setStatusBarColor(color);
     }
@@ -366,7 +388,6 @@ public class MainActivity extends AppCompatActivity {
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
             animateSecondaryFabsOut(secondaryFab1);
-            animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
         } else {
             updateApp.animate()
@@ -374,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
             animateSecondaryFabsIn(secondaryFab1);
-            animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;

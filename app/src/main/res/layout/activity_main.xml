@@ -5,34 +5,51 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backdrop"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/countdownTextView"
-        android:layout_width="274dp"
-        android:layout_height="74dp"
-        android:fontFamily="@font/mainfont"
-        android:textAlignment="textStart"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.123" />
+    <chihane.starrysky.StarrySky
+        android:id="@+id/starrySky"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:backgroundTint="#131313">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/countdownTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/psb"
+                    android:text="Hello World"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/updateApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="50dp"
-        android:backgroundTint="#FFDEDE"
         android:clickable="true"
         android:contentDescription="@string/app_update_button"
         android:elevation="30dp"
-        android:src="@drawable/new_update"
+        android:src="@drawable/owl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp" />
@@ -47,7 +64,6 @@
         android:contentDescription="@string/app_update_button_fab"
         android:elevation="6dp"
         android:src="@drawable/upgrade_24"
-        android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,24 +79,8 @@
         android:contentDescription="@string/app_appearance_fab"
         android:elevation="6dp"
         android:src="@drawable/lock"
-        android:backgroundTint="#FFDEDE"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="35dp" />
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/secondaryFab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:contentDescription="@string/app_appearance_fab"
-        android:elevation="6dp"
-        android:src="@drawable/light_mode"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:backgroundTint="#FFDEDE"
         app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="35dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
