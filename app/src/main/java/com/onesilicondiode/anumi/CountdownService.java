@@ -113,7 +113,7 @@ public class CountdownService extends Service {
             contentText = "Just a week remaining Bhumi";
         } else if (daysLeft > 1) {
             contentText = "Just " + daysLeft + " days remaining Bhumi";
-        } else if (daysLeft == 1) {
+        } else if (daysLeft < 1) {
             contentText = "24 Hours to Go.";
         } else {
             contentText = "Happy Brrrrthdayyyayyy! 👜";
@@ -121,7 +121,7 @@ public class CountdownService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("18th ✨🎂")
+                .setContentTitle("The 18th ✨🎂")
                 .setContentText(contentText)
                 .setSmallIcon(R.drawable.notification_logo)
                 .setColor(notificationColor)
@@ -137,7 +137,7 @@ public class CountdownService extends Service {
     private int getNotificationColor(int daysLeft) {
         int colorResId;
         if (daysLeft > 9) {
-            colorResId = R.color.pink; // Set the appropriate color resource for more than 7 days
+            colorResId = R.color.pale_orange; // Set the appropriate color resource for more than 7 days
         } else if (daysLeft == 9) {
             colorResId = R.color.brown;
         } else if (daysLeft == 8) {

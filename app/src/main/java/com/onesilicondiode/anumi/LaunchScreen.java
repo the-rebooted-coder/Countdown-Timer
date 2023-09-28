@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 @SuppressLint("CustomSplashScreen")
 public class LaunchScreen extends AppCompatActivity {
-    private static final int SPLASH_DURATION = 1350;
+    private static final int SPLASH_DURATION = 1;
+    //TODO Change this back to 1350
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
