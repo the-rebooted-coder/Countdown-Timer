@@ -11,7 +11,7 @@ android {
         applicationId "com.onesilicondiode.anumi"
         minSdk 26
         targetSdk 33
-        versionCode 9
+        versionCode 10
         versionName "KP P.G. 🎵"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

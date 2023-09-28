@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
         ConstraintLayout rootView = findViewById(R.id.relativeLayout);
-        Toast.makeText(this, "Try shaking your phone Bhumi 👀", Toast.LENGTH_SHORT).show();
         shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
@@ -207,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (daysRemaining > 1) {
             // Display days remaining if more than 1 day is left
-            countdownTextView.setText(String.format("%d days left", daysRemaining));
+            countdownTextView.setText(String.format("%d\nDays left", daysRemaining));
         } else if (daysRemaining == 1) {
             // Display singular text if 1 day is left
             countdownTextView.setText(R.string._1_day_left);
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
                     long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60;
                     long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60;
-
+                    Toast.makeText(MainActivity.this, "Try shaking your phone Bhumi 👀", Toast.LENGTH_SHORT).show();
                     // Format the remaining time
                     String remainingTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
                     countdownTextView.setText(remainingTime);
