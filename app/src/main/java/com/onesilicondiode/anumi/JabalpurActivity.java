@@ -67,6 +67,8 @@ public class JabalpurActivity extends AppCompatActivity {
     private static final int EVENING_END_HOUR = 20;
     private static final int NIGHT_START_HOUR = 21;  // Midnight
     private static final int NIGHT_END_HOUR = 5;
+    private static final String PREF_NAME = "MyAppPreferences";
+    private static final String DIALOG_SHOWN_KEY = "dialog_shown_jbp";
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
@@ -74,17 +76,44 @@ public class JabalpurActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences alertBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jabalpur);
         setupUi();
+        checkDialog();
         findViews();
         setupClicks();
         startCountdownService();
+    }
+
+    private void checkDialog() {
+        if (!isDialogShown()) {
+            // Show the Material Dialog
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Welcome to your city, Jabalpur 🏙️")
+                    .setCancelable(false)
+                    .setMessage("Even when you're far from the heart of the city, you can still catch a glimpse of its vibrant pulse at this very moment.\n\nThis lets you stay connected to the city you love, no matter where you are. It's like a snapshot of the urban rhythm, right here, right now.\uD83C\uDF06\uD83D\uDD52\uD83C\uDF1F")
+                    .setPositiveButton("Ohhhhhhhh!", (dialog, which) -> {
+                        // Handle "OK" button click
+                        // Store in SharedPreferences that the dialog has been shown
+                        setDialogShown(true);
+                    })
+                    .show();
+        }
+    }
+
+    private boolean isDialogShown() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(DIALOG_SHOWN_KEY, false);
+    }
+
+    private void setDialogShown(boolean shown) {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(DIALOG_SHOWN_KEY, shown);
+        editor.apply();
     }
 
     private void startCountdownService() {

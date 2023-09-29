@@ -67,6 +67,8 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private static final int EVENING_END_HOUR = 20;
     private static final int NIGHT_START_HOUR = 21;  // Midnight
     private static final int NIGHT_END_HOUR = 5;
+    private static final String PREF_NAME = "MyAppPreferences";
+    private static final String DIALOG_SHOWN_KEY = "dialog_shown_bn";
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
@@ -80,9 +82,38 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baaghban_nagar);
         setupUi();
+        checkDialog();
         findViews();
         setupClicks();
         startCountdownService();
+    }
+
+    private void checkDialog() {
+        if (!isDialogShown()) {
+            // Show the Material Dialog
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Welcome to a home, away from home 🏠")
+                    .setCancelable(false)
+                    .setMessage("Wherever you wander, stay close to your roots.\n\nDynamic feature lets you take a quick peek at home, so you can see how things are at the current hour.\n\nIt's like a little window to your world, no matter where you are ❤️🌏")
+                    .setPositiveButton("Sweeeeet!", (dialog, which) -> {
+                        // Handle "OK" button click
+                        // Store in SharedPreferences that the dialog has been shown
+                        setDialogShown(true);
+                    })
+                    .show();
+        }
+    }
+
+    private boolean isDialogShown() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(DIALOG_SHOWN_KEY, false);
+    }
+
+    private void setDialogShown(boolean shown) {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(DIALOG_SHOWN_KEY, shown);
+        editor.apply();
     }
 
     private void startCountdownService() {
