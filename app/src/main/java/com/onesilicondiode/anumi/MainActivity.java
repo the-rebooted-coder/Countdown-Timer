@@ -72,7 +72,6 @@ import chihane.starrysky.StarrySky;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final String UI_PREF = "night_mode_preference";
     public static final String STORE_DIALOGE = "show_store_dialog";
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
@@ -431,12 +430,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setStatusBarColor(int color) {
         getWindow().setStatusBarColor(color);
-    }
-
-    private void saveNightModeState(boolean isEnabled) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(NIGHT_MODE_KEY, isEnabled);
-        editor.apply();
     }
 
     private void toggleSecondaryFabs() {
