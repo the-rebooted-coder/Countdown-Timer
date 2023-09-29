@@ -5,5 +5,6 @@ Welcome to Version: KP P.G. 🏠.
 3. Say Hello to Dynamic Background 🚀.
 4. Light/ Dark mode ditched in favor of a more classy look 👀.
 5. Smoother, Cleaner Interface 💫.
+6. Experience a new theme, 'Baaghban Nagar' home away from home 🏠.
 
 TIP: You will need to re-add the widget to refresh it.
