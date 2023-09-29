@@ -39,14 +39,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.github.jinatonic.confetti.CommonConfetti;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.seismic.ShakeDetector;
@@ -92,15 +91,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int AFTERNOON_START_HOUR = 12;
     private static final int AFTERNOON_END_HOUR = 17;
     private static final int EVENING_START_HOUR = 18;
-    private static final int EVENING_END_HOUR = 23;
-    private static final int NIGHT_START_HOUR = 0;  // Midnight
+    private static final int EVENING_END_HOUR = 20;
+    private static final int NIGHT_START_HOUR = 21;  // Midnight
     private static final int NIGHT_END_HOUR = 5;
     String targetPackageName = "com.onesilicondiode.store";
     ShakeDetector shakeDetector;
+    ConstraintLayout rootView;
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
     private FloatingActionButton secondaryFab1;
+    private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
     private SharedPreferences sharedPreferences;
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
     private int baseMagnitude = 0;
     private int magnitudeAmplitude = 9;
     private StarrySky sky;
-    ConstraintLayout rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder = getSharedPreferences(STORE_DIALOGE, MODE_PRIVATE);
         boolean isDialogShown = alertBuilder.getBoolean(ALERT_DIALOG_SHOWN_KEY, false);
         secondaryFab1 = findViewById(R.id.secondaryFab1);
+        secondaryFab2 = findViewById(R.id.secondaryFab2);
         secondaryFab3 = findViewById(R.id.secondaryFab3);
         if (isAppInstalled(targetPackageName)) {
             if (!isDialogShown) {
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         secondaryFab1.setVisibility(View.GONE);
+                        secondaryFab2.setVisibility(View.GONE);
                         secondaryFab3.setVisibility(View.GONE);
                     }
                 });
@@ -228,6 +230,13 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Show "No internet" message
                 Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
+            }
+        });
+        secondaryFab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Perform action for secondaryFab2
+                showLocationChoiceDialog();
             }
         });
         secondaryFab3.setOnClickListener(view -> {
@@ -279,6 +288,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }.start();
         }
+    }
+
+    private void showLocationChoiceDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Choose Your Location")
+                .setPositiveButton("Baaghban Nagar", (dialog, which) -> {
+                    // Save the selected location to SharedPreferences
+                    String selectedLocation = "Baaghban Nagar";
+                    saveLocationPreference(selectedLocation);
+
+                    // Intent to the Baaghban Nagar activity
+                    Intent intent = new Intent(MainActivity.this, BaaghbanNagarActivity.class);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                })
+                .setNegativeButton("Jabalpur", (dialog, which) -> {
+                    // Save the selected location to SharedPreferences
+                    String selectedLocation = "Jabalpur";
+                    saveLocationPreference(selectedLocation);
+
+                    // Intent to the Jabalpur activity
+                    Intent intent = new Intent(MainActivity.this, JabalpurActivity.class);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                })
+                .show();
+    }
+
+    private void saveLocationPreference(String selectedLocation) {
+        SharedPreferences preferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("selected_location", selectedLocation);
+        editor.apply();
     }
 
     private void mimicShake() {
@@ -384,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
     private void setStatusBarColor(int color) {
         getWindow().setStatusBarColor(color);
     }
@@ -401,6 +446,7 @@ public class MainActivity extends AppCompatActivity {
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
             animateSecondaryFabsOut(secondaryFab1);
+            animateSecondaryFabsOut(secondaryFab2);
             animateSecondaryFabsOut(secondaryFab3);
         } else {
             updateApp.animate()
@@ -408,6 +454,7 @@ public class MainActivity extends AppCompatActivity {
                     .setInterpolator(new AccelerateInterpolator())
                     .start();
             animateSecondaryFabsIn(secondaryFab1);
+            animateSecondaryFabsIn(secondaryFab2);
             animateSecondaryFabsIn(secondaryFab3);
         }
         isSecondaryFabOpen = !isSecondaryFabOpen;

@@ -29,7 +29,6 @@ import javax.crypto.SecretKey;
 
 public class LockApp extends AppCompatActivity {
     public static final String APP_LOCK = "lockedApp";
-    public static final String CREDIT_ROLL = "rollCredits";
     public static final String APP_IS_UNLOCKED = "appUnlocked";
     private static final String CORRECT_PIN = "1709";
     private static final String KEY_NAME = "my_key_name";
@@ -43,7 +42,8 @@ public class LockApp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_app);
         setStatusBarColor(getResources().getColor(R.color.orange));
-        fingerprintManager = FingerprintManagerCompat.from(this);{
+        fingerprintManager = FingerprintManagerCompat.from(this);
+        {
             boolean isUnlocked = getSharedPreferences(APP_LOCK, MODE_PRIVATE)
                     .getBoolean(APP_IS_UNLOCKED, false);
             if (isUnlocked) {
@@ -60,6 +60,7 @@ public class LockApp extends AppCompatActivity {
             }
         }
     }
+
     private void showPinInputDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_pin_input, null);
@@ -154,9 +155,26 @@ public class LockApp extends AppCompatActivity {
         getSharedPreferences(APP_LOCK, MODE_PRIVATE).edit()
                 .putBoolean(APP_IS_UNLOCKED, true)
                 .apply();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        String selectedLocation = getSelectedLocation();
+        if ("Baaghban Nagar".equals(selectedLocation)) {
+            // Navigate to Baaghban Nagar Activity
+            Intent intent = new Intent(LockApp.this, BaaghbanNagarActivity.class);
+            startActivity(intent);
+        } else if ("Jabalpur".equals(selectedLocation)) {
+            // Navigate to Jabalpur Activity
+            Intent intent = new Intent(LockApp.this, JabalpurActivity.class);
+            startActivity(intent);
+        } else {
+            // Navigate to Jabalpur Activity
+            Intent intent = new Intent(LockApp.this, MainActivity.class);
+            startActivity(intent);
+        }
         finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+    private String getSelectedLocation() {
+        SharedPreferences preferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        return preferences.getString("selected_location", "");
     }
 
     private void setStatusBarColor(int color) {
