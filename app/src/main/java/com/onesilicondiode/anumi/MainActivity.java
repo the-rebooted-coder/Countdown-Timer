@@ -46,6 +46,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.github.jinatonic.confetti.CommonConfetti;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.seismic.ShakeDetector;
@@ -110,13 +111,14 @@ public class MainActivity extends AppCompatActivity {
     private int baseMagnitude = 0;
     private int magnitudeAmplitude = 9;
     private StarrySky sky;
+    ConstraintLayout rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setStatusBarColor(getResources().getColor(R.color.orange));
-        ConstraintLayout rootView = findViewById(R.id.relativeLayout);
+        rootView = findViewById(R.id.relativeLayout);
         shakeDetector = new ShakeDetector(new ShakeDetector.Listener() {
             @Override
             public void hearShake() {
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentHour >= MORNING_START_HOUR && currentHour < MORNING_END_HOUR) {
             // It's morning, perform morning-related actions
             sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_DAWN);
+            sky.setVisibility(View.VISIBLE);
             StarMaker starMaker = StarMaker.with(this)
                     .seed(seed)
                     .density(density)
@@ -143,11 +146,20 @@ public class MainActivity extends AppCompatActivity {
                     .starTwinkles();
             sky.dominateBy(starMaker);
         } else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
-            // It's afternoon, perform afternoon-related actions
-            //TODO Add Morning Actions
+            sky.setBackgroundColor(R.color.orange);
+            sky.setVisibility(View.VISIBLE);
+            StarMaker starMaker = StarMaker.with(this)
+                    .seed(seed)
+                    .density(density)
+                    .baseMagnitude(baseMagnitude)
+                    .magnitudeAmplitude(magnitudeAmplitude)
+                    .createGiantStar()
+                    .starTwinkles();
+            sky.dominateBy(starMaker);
         } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
             // It's evening, perform evening-related actions
             sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_DUSK);
+            sky.setVisibility(View.VISIBLE);
             StarMaker starMaker = StarMaker.with(this)
                     .seed(seed)
                     .density(density)
@@ -159,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // It's night, perform night-related actions
             sky.setBackgroundColor(StarrySky.BACKGROUND_COLOR_MIDNIGHT);
+            sky.setVisibility(View.VISIBLE);
             StarMaker starMaker = StarMaker.with(this)
                     .seed(seed)
                     .density(density)

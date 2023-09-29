@@ -10,13 +10,15 @@
     <chihane.starrysky.StarrySky
         android:id="@+id/starrySky"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_centerInParent="true"
