@@ -29,14 +29,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.squareup.seismic.ShakeDetector;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -61,12 +59,6 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
-    private static final String WALLPAPER_NOTIF_SHOWN = "ThisisLively";
-    private static final String WALLPAPER_NOTIF = "LiveHomeWallpaper";
-    private static final String NOTIFICATION_CHANNEL_ID = "my_channel_id";
-    private static final int NOTIFICATION_ID = 1;
-    private static final String ALERT_DIALOG_SHOWN_KEY = "alert_dialog_shown";
-    private static final int REQUEST_CALL_PERMISSION = 12;
     private static final int MORNING_START_HOUR = 6;
     private static final int MORNING_END_HOUR = 11;
     private static final int AFTERNOON_START_HOUR = 12;
@@ -75,9 +67,6 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private static final int EVENING_END_HOUR = 20;
     private static final int NIGHT_START_HOUR = 21;  // Midnight
     private static final int NIGHT_END_HOUR = 5;
-    String targetPackageName = "com.onesilicondiode.store";
-    ShakeDetector shakeDetector;
-    ConstraintLayout rootView;
     private Vibrator vibrator;
     private FloatingActionButton updateApp;
     private boolean isSecondaryFabOpen = false;
@@ -85,8 +74,6 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private FloatingActionButton secondaryFab2;
     private FloatingActionButton secondaryFab3;
     private AlertDialog firstDialog;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences alertBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +192,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
 
     private void showLocationChoiceDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Choose Your Location")
+                .setTitle("Choose a Scene")
                 .setPositiveButton("Starry Sky", (dialog, which) -> {
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Starry Sky";
@@ -252,11 +239,6 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private void requestWriteExternalStoragePermission() {
         // Request write external storage permission
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-    }
-
-    private void requestWriteExternalStoragePermissionApk() {
-        // Request write external storage permission
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK);
     }
 
     @Override

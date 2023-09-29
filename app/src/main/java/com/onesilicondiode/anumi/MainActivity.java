@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showLocationChoiceDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Choose Your Location")
+                .setTitle("Choose a Scene")
                 .setPositiveButton("Baaghban Nagar", (dialog, which) -> {
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Baaghban Nagar";
@@ -515,11 +515,6 @@ public class MainActivity extends AppCompatActivity {
     private void requestWriteExternalStoragePermission() {
         // Request write external storage permission
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
-    }
-
-    private void requestWriteExternalStoragePermissionApk() {
-        // Request write external storage permission
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK);
     }
 
     @Override
