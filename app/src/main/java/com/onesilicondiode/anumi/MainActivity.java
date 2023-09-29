@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String STORE_DIALOGE = "show_store_dialog";
     public static final String NIGHT_MODE_KEY = "night_mode_enable";
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK = 121;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";

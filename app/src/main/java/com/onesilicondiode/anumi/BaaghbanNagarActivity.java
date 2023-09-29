@@ -23,12 +23,14 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -55,16 +57,17 @@ import java.util.regex.Pattern;
 
 public class BaaghbanNagarActivity extends AppCompatActivity {
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_STORE_APK = 121;
     private static final String TEXT_FILE_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/anumi-update.txt";
     private static final String APK_DOWNLOAD_URL = "https://the-rebooted-coder.github.io/Countdown-Timer/Anumi.apk";
     private static final String UPDATE_CHANGELOG = "https://the-rebooted-coder.github.io/Countdown-Timer/update_changelog.txt";
     private static final int MORNING_START_HOUR = 6;
     private static final int MORNING_END_HOUR = 11;
-    private static final int AFTERNOON_START_HOUR = 12;
-    private static final int AFTERNOON_END_HOUR = 17;
+    private static final int DAY_START_HOUR = 11;
+    private static final int DAY_END_HOUR = 15;
+    private static final int AFTERNOON_START_HOUR = 15;
+    private static final int AFTERNOON_END_HOUR = 18;
     private static final int EVENING_START_HOUR = 18;
-    private static final int EVENING_END_HOUR = 20;
+    private static final int EVENING_END_HOUR = 21;
     private static final int NIGHT_START_HOUR = 21;  // Midnight
     private static final int NIGHT_END_HOUR = 5;
     private static final String PREF_NAME = "MyAppPreferences";
@@ -94,8 +97,8 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
             new MaterialAlertDialogBuilder(this)
                     .setTitle("Welcome to a home, away from home 🏠")
                     .setCancelable(false)
-                    .setMessage("Wherever you wander, stay close to your roots.\n\nDynamic feature lets you take a quick peek at home, so you can see how things are at the current hour.\n\nIt's like a little window to your world, no matter where you are ❤️🌏")
-                    .setPositiveButton("Sweeeeet!", (dialog, which) -> {
+                    .setMessage(R.string.bn_desc)
+                    .setPositiveButton("Sweeeeeet!", (dialog, which) -> {
                         // Handle "OK" button click
                         // Store in SharedPreferences that the dialog has been shown
                         setDialogShown(true);
@@ -196,7 +199,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
 
         if (daysRemaining > 1) {
             // Display days remaining if more than 1 day is left
-            countdownTextView.setText(String.format("%d\nDays left", daysRemaining));
+            countdownTextView.setText(String.format("%d days", daysRemaining));
         } else if (daysRemaining == 1) {
             // Display singular text if 1 day is left
             countdownTextView.setText(R.string._1_day_left);
@@ -488,16 +491,24 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     }
 
     private void setupUi() {
+        ImageView background = findViewById(R.id.bnNagarImage);
         Calendar currentTime = Calendar.getInstance();
         int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
         if (currentHour >= MORNING_START_HOUR && currentHour < MORNING_END_HOUR) {
             // It's morning, perform morning-related actions
+            background.setBackgroundResource(R.drawable.morning);
+        } else if (currentHour >= DAY_START_HOUR && currentHour < DAY_END_HOUR) {
+            // It's day, perform day-related actions
+            background.setBackgroundResource(R.drawable.day);
         } else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
             // It's afternoon, perform afternoon-related actions
+            background.setBackgroundResource(R.drawable.afternoon);
         } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
             // It's evening, perform evening-related actions
+            background.setBackgroundResource(R.drawable.evening);
         } else {
             // It's night, perform night-related actions
+            background.setBackgroundResource(R.drawable.night);
         }
     }
 

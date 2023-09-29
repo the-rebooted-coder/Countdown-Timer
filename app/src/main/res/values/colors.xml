@@ -16,4 +16,5 @@
     <color name="pinkish">#ffb6c1</color>
     <color name="violet">#E6E6FA</color>
     <color name="tonal">#FD9E38</color>
+    <color name="trans_grey">#D51C1C1C</color>
 </resources>
