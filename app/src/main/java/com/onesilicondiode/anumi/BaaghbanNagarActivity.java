@@ -68,11 +68,12 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     private static final int DAY_START_HOUR = 11;
     private static final int DAY_END_HOUR = 15;
     private static final int AFTERNOON_START_HOUR = 15;
-    private static final int AFTERNOON_END_HOUR = 18;
-    private static final int EVENING_START_HOUR = 18;
-    private static final int EVENING_END_HOUR = 21;
-    private static final int NIGHT_START_HOUR = 21;  // Midnight
-    private static final int NIGHT_END_HOUR = 5;
+    private static final int AFTERNOON_END_HOUR = 17;
+    private static final int DUSK_START_HOUR = 17;
+    private static final int DUSK_END_HOUR = 19;
+    private static final int EVENING_START_HOUR = 19;
+    private static final int EVENING_END_HOUR = 23;
+
     private static final String PREF_NAME = "MyAppPreferences";
     private static final String DIALOG_SHOWN_KEY = "dialog_shown_bn";
     private Vibrator vibrator;
@@ -241,8 +242,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 })
-                .setNegativeButton("Coming Soon", (dialog, which) -> {
-                    /*
+                .setNegativeButton("Jabalpur", (dialog, which) -> {
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Jabalpur";
                     saveLocationPreference(selectedLocation);
@@ -252,8 +252,6 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-                     */
                 })
                 .show();
     }
@@ -519,6 +517,12 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
             AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
             RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
             background.setTransitionGenerator(generator);
+        } else if (currentHour >= DUSK_START_HOUR && currentHour < DUSK_END_HOUR) {
+                // It's evening, perform evening-related actions
+                background.setImageDrawable(getResources().getDrawable(R.drawable.dusk));
+                AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+                RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+                background.setTransitionGenerator(generator);
         } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
             // It's evening, perform evening-related actions
             background.setImageDrawable(getResources().getDrawable(R.drawable.evening));

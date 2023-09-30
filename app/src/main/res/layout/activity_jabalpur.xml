@@ -26,8 +26,8 @@
             android:fontFamily="@font/psb"
             android:text="Hello World"
             android:textAlignment="center"
-            android:textColor="@color/trans_grey"
-            android:textSize="24sp" />
+            android:textColor="#E9E3E3E3"
+            android:textSize="32sp" />
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -302,8 +302,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 })
-                .setNegativeButton("Coming Soon", (dialog, which) -> {
-                    /*
+                .setNegativeButton("Jabalpur", (dialog, which) -> {
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Jabalpur";
                     saveLocationPreference(selectedLocation);
@@ -313,8 +312,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-                     */
                 })
                 .show();
     }

@@ -23,13 +23,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -46,6 +46,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -488,20 +489,24 @@ public class JabalpurActivity extends AppCompatActivity {
 
     private void setupUi() {
         Calendar currentTime = Calendar.getInstance();
-        ConstraintLayout background = findViewById(R.id.jbp);
+        ImageView background = findViewById(R.id.jbpImage);
         int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
-        if (currentHour >= MORNING_START_HOUR && currentHour < MORNING_END_HOUR) {
-            // It's morning, perform morning-related actions
-        }else if (currentHour >= DAY_START_HOUR && currentHour < DAY_END_HOUR) {
-            // It's day, perform day-related actions
-        }
-        else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
-            // It's afternoon, perform afternoon-related actions
-        } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
-            // It's evening, perform evening-related actions
+        int backgroundResource;
+
+        if (currentHour >= MORNING_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
+            int[] morningImages = {R.drawable.morning_1, R.drawable.morning_2, R.drawable.morning_3, R.drawable.morning_4, R.drawable.morning_5};
+            backgroundResource = getRandomImageResource(morningImages);
         } else {
-            // It's night, perform night-related actions
+            int[] nightImages = {R.drawable.night_1, R.drawable.night_2, R.drawable.night_3, R.drawable.night_4, R.drawable.night_5, R.drawable.night_6};
+            backgroundResource = getRandomImageResource(nightImages);
         }
+        background.setBackgroundResource(backgroundResource);
+    }
+
+    private int getRandomImageResource(int[] imageArray) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(imageArray.length);
+        return imageArray[randomIndex];
     }
 
     private class ReadTextFileTask implements Callable<String> {

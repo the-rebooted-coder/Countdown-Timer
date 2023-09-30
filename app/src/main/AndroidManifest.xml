@@ -66,12 +66,26 @@
             android:enabled="true"
             android:exported="true" />
         <service
+            android:name=".BaaghbanLiveWallpaperService"
+            android:label="Baaghban Nagar"
+            android:enabled="true"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/wallpaper" />
+        </service>
+
+        <service
             android:name=".CountdownLiveWallpaperService"
             android:attributionTags="Spandan Saxena"
             android:description="@string/live_wallpaper_desc"
             android:enabled="true"
             android:exported="true"
-            android:label="Homecoming Wallpaper"
+            android:label="Birthday Countdown"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
