@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -34,6 +35,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.flaviofaria.kenburnsview.RandomTransitionGenerator;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -494,24 +497,40 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
     }
 
     private void setupUi() {
-        ImageView background = findViewById(R.id.bnNagarImage);
+        KenBurnsView background = findViewById(R.id.bnNagarImage);
         Calendar currentTime = Calendar.getInstance();
         int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
         if (currentHour >= MORNING_START_HOUR && currentHour < MORNING_END_HOUR) {
             // It's morning, perform morning-related actions
             background.setBackgroundResource(R.drawable.morning);
+            AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+            RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+            background.setTransitionGenerator(generator);
+
         } else if (currentHour >= DAY_START_HOUR && currentHour < DAY_END_HOUR) {
             // It's day, perform day-related actions
-            background.setBackgroundResource(R.drawable.day);
+            background.setImageDrawable(getResources().getDrawable(R.drawable.day));
+            AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+            RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+            background.setTransitionGenerator(generator);
         } else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
             // It's afternoon, perform afternoon-related actions
-            background.setBackgroundResource(R.drawable.afternoon);
+            background.setImageDrawable(getResources().getDrawable(R.drawable.afternoon));
+            AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+            RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+            background.setTransitionGenerator(generator);
         } else if (currentHour >= EVENING_START_HOUR && currentHour < EVENING_END_HOUR) {
             // It's evening, perform evening-related actions
-            background.setBackgroundResource(R.drawable.evening);
+            background.setImageDrawable(getResources().getDrawable(R.drawable.evening));
+            AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+            RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+            background.setTransitionGenerator(generator);
         } else {
             // It's night, perform night-related actions
-            background.setBackgroundResource(R.drawable.night);
+            background.setImageDrawable(getResources().getDrawable(R.drawable.night));
+            AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
+            RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
+            background.setTransitionGenerator(generator);
         }
     }
 

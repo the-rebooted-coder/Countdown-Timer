@@ -6,6 +6,9 @@ plugins {
 android {
     namespace 'com.onesilicondiode.anumi'
     compileSdk 33
+    lintOptions {
+        disable "Instantiatable"
+    }
 
     defaultConfig {
         applicationId "com.onesilicondiode.anumi"
@@ -42,5 +45,6 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     implementation 'com.github.jinatonic.confetti:confetti:1.0.0'
     implementation 'com.squareup:seismic:1.0.3'
+    implementation 'com.flaviofaria:kenburnsview:1.0.7'
     implementation 'com.github.chihane:StarrySky:1.0.0'
 }
