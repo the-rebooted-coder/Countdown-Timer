@@ -29,6 +29,9 @@
         android:theme="@style/Theme.Anumi"
         tools:targetApi="31">
         <activity
+            android:name=".PasswordBottomSheetDialog"
+            android:exported="false" />
+        <activity
             android:name=".JabalpurActivity"
             android:exported="false" />
         <activity

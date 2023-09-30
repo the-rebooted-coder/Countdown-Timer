@@ -199,7 +199,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
 
         if (daysRemaining > 1) {
             // Display days remaining if more than 1 day is left
-            countdownTextView.setText(String.format("%d days", daysRemaining));
+            countdownTextView.setText(String.format("%d Days", daysRemaining));
         } else if (daysRemaining == 1) {
             // Display singular text if 1 day is left
             countdownTextView.setText(R.string._1_day_left);
@@ -238,7 +238,8 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 })
-                .setNegativeButton("Jabalpur", (dialog, which) -> {
+                .setNegativeButton("Coming Soon", (dialog, which) -> {
+                    /*
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Jabalpur";
                     saveLocationPreference(selectedLocation);
@@ -248,6 +249,8 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                     */
                 })
                 .show();
     }
@@ -419,7 +422,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 6) {
+            if (value > 7) {
                 return true;
             }
         }

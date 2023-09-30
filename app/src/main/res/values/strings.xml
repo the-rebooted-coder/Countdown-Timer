@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anumi</string>
+    <string name="app_name">Bhumi</string>
     <string name="default_notification_channel_id">remote</string>
     <string name="app_update_button">App Update Button</string>
     <string name="_1_day_left">1 day left</string>
@@ -12,4 +12,5 @@
     <string name="start_fireworks">FIREWORKS!</string>
     <string name="jabalpur_desc">Even when you\'re far from the heart of the city, you can still catch a glimpse of its vibrant pulse at this very moment.\n\nThis lets you stay connected to the city you love, no matter where you are. It\'s like a snapshot of the urban rhythm, right here, right now.🌆🕒🌟</string>
     <string name="bn_desc">Wherever you wander, stay close to your roots.\n\nDynamic feature lets you take a quick peek at home, so you can see how things are at the current hour.\n\nIt\'s like a little window to your world, no matter where you are ❤️🌏</string>
+    <string name="install_instructions">Open \'File Manager\' go to \'Anumi\' folder inside \'Downloads\', install the file named Anumi-Update!\n\nAlternatively tap on the notification\n\n.You\'re Done!🥂</string>
 </resources>

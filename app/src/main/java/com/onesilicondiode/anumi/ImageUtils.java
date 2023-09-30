@@ -15,12 +15,14 @@ public class ImageUtils {
                 R.drawable.wall_26,
                 R.drawable.wall_27,
                 R.drawable.wall_28,
+                R.drawable.wall_29,
+                R.drawable.wall_30,
         };
 
         if (day >= 1 && day <= imageResources.length) {
             return imageResources[day - 1]; // Adjust for 0-based index
         } else {
-            return R.drawable.wall_28;
+            return R.drawable.wall_30;
         }
     }
 }

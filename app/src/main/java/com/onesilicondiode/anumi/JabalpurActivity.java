@@ -466,7 +466,7 @@ public class JabalpurActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 6) {
+            if (value > 7) {
                 return true;
             }
         }

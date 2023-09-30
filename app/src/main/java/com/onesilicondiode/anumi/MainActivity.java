@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CALL_PERMISSION = 12;
     private static final int MORNING_START_HOUR = 6;
     private static final int MORNING_END_HOUR = 11;
-    private static final int AFTERNOON_START_HOUR = 12;
+    private static final int AFTERNOON_START_HOUR = 11;
     private static final int AFTERNOON_END_HOUR = 17;
-    private static final int EVENING_START_HOUR = 18;
+    private static final int EVENING_START_HOUR = 17;
     private static final int EVENING_END_HOUR = 20;
-    private static final int NIGHT_START_HOUR = 21;  // Midnight
+    private static final int NIGHT_START_HOUR = 20;
     private static final int NIGHT_END_HOUR = 5;
     String targetPackageName = "com.onesilicondiode.store";
     ShakeDetector shakeDetector;
@@ -302,7 +302,8 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 })
-                .setNegativeButton("Jabalpur", (dialog, which) -> {
+                .setNegativeButton("Coming Soon", (dialog, which) -> {
+                    /*
                     // Save the selected location to SharedPreferences
                     String selectedLocation = "Jabalpur";
                     saveLocationPreference(selectedLocation);
@@ -312,6 +313,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                     */
                 })
                 .show();
     }
@@ -613,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
         request.setDescription("Please Wait...");
         File destinationDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Anumi");
         destinationDirectory.mkdirs();
-        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Anumi-Update.apk")));
+        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Bhumi-Update.apk")));
         downloadManager.enqueue(request);
         Toast.makeText(this, "Download started, check notification for progress 🚀", Toast.LENGTH_LONG).show();
         new FetchTextTask().execute(UPDATE_CHANGELOG);
@@ -621,7 +624,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayTextInDialog(String text) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("What's New in Anumi")
+        builder.setTitle("What's New in Bhumi")
                 .setMessage(text + "\nTap 'BEGIN' to start update")
                 .setIcon(R.drawable.update_icon)
                 .setPositiveButton("BEGIN", new DialogInterface.OnClickListener() {
@@ -650,7 +653,7 @@ public class MainActivity extends AppCompatActivity {
         }
         AlertDialog.Builder secondD = new AlertDialog.Builder(this);
         secondD.setTitle("How to update ⚒️")
-                .setMessage("Open your phone's 'File Manager' go to 'Anumi' folder inside 'Downloads', install the file named Anumi-Update!\n\nYou're Done!🥂")
+                .setMessage(R.string.install_instructions)
                 .setIcon(R.drawable.how_to_update)
                 .setPositiveButton("OKAY!", (dialog, which) -> {
                 })
@@ -665,7 +668,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 6) {
+            if (value > 7) {
                 return true;
             }
         }

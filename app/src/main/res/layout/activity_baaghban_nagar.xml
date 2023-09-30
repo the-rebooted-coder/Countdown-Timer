@@ -24,11 +24,11 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-            android:fontFamily="@font/psb"
+            android:fontFamily="@font/bnfont"
             android:text="Hello World"
             android:textAlignment="center"
-            android:textColor="#DDFAFAFA"
-            android:textSize="24sp" />
+            android:textColor="#FFFFFF"
+            android:textSize="42sp" />
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

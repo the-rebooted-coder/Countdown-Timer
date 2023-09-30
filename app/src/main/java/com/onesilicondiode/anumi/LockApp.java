@@ -172,6 +172,7 @@ public class LockApp extends AppCompatActivity {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
     private String getSelectedLocation() {
         SharedPreferences preferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
         return preferences.getString("selected_location", "");

@@ -23,11 +23,8 @@ public class CountdownLiveWallpaperService extends WallpaperService {
         private static final long DELAY_MILLIS = 1000;
 
         private final Handler handler = new Handler();
-        private final Runnable drawRunner = () -> draw();
-
-        private int currentDay;
+        private int currentDay;        private final Runnable drawRunner = () -> draw();
         private boolean isHappyHomecoming;
-
         private SharedPreferences prefs;
 
         @Override
@@ -68,8 +65,8 @@ public class CountdownLiveWallpaperService extends WallpaperService {
         private int getCurrentDay(Calendar today) {
             // Calculate the current day of the countdown
             Calendar startDate = Calendar.getInstance();
-            startDate.set(Calendar.MONTH, Calendar.AUGUST);
-            startDate.set(Calendar.DAY_OF_MONTH, 17);
+            startDate.set(Calendar.MONTH, Calendar.SEPTEMBER);
+            startDate.set(Calendar.DAY_OF_MONTH, 30);
 
             long millisSinceStart = today.getTimeInMillis() - startDate.getTimeInMillis();
             int currentDay = (int) (millisSinceStart / (24 * 60 * 60 * 1000)) + 1; // Adjust for 1-based index
@@ -80,8 +77,8 @@ public class CountdownLiveWallpaperService extends WallpaperService {
             // Calculate the milliseconds remaining until the end date
             Calendar endDate = Calendar.getInstance();
             endDate.set(Calendar.YEAR, 2023);
-            endDate.set(Calendar.MONTH, Calendar.AUGUST);
-            endDate.set(Calendar.DAY_OF_MONTH, 29);
+            endDate.set(Calendar.MONTH, Calendar.OCTOBER);
+            endDate.set(Calendar.DAY_OF_MONTH, 14);
             endDate.set(Calendar.HOUR_OF_DAY, 0);
             endDate.set(Calendar.MINUTE, 0);
             endDate.set(Calendar.SECOND, 0);
@@ -114,14 +111,14 @@ public class CountdownLiveWallpaperService extends WallpaperService {
         }
 
         private void drawBackground(Canvas canvas) {
-            canvas.drawColor(Color.BLACK); // Set your background color here
+            canvas.drawColor(Color.BLACK);
         }
 
         private void drawImage(Canvas canvas) {
             int imageResource;
 
             if (isHappyHomecoming) {
-                imageResource = R.drawable.wall_28; // Replace with your "Happy Homecoming" image
+                imageResource = R.drawable.wall_30;
             } else {
                 imageResource = getImageResourceId(currentDay);
             }
@@ -157,5 +154,7 @@ public class CountdownLiveWallpaperService extends WallpaperService {
             drawable.setBounds(left, top, right, bottom);
             drawable.draw(canvas);
         }
+
+
     }
 }
