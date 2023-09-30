@@ -14,8 +14,8 @@ android {
         applicationId "com.onesilicondiode.anumi"
         minSdk 26
         targetSdk 33
-        versionCode 10
-        versionName "KP P.G. 🏠"
+        versionCode 11
+        versionName "Jaipur 🌆"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

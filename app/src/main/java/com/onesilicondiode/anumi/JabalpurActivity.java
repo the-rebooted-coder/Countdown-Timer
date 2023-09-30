@@ -130,12 +130,7 @@ public class JabalpurActivity extends AppCompatActivity {
         TextView countdownTextView = findViewById(R.id.countdownTextView);
         updateApp = findViewById(R.id.updateApp);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        updateApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleFabClick(view);
-            }
-        });
+        updateApp.setOnClickListener(view -> handleFabClick(view));
         Calendar targetDate = Calendar.getInstance();
         targetDate.set(2023, Calendar.OCTOBER, 14, 0, 0, 0);
         Calendar currentDate = Calendar.getInstance();
@@ -304,12 +299,9 @@ public class JabalpurActivity extends AppCompatActivity {
                 Snackbar.make(view, "No Internet 🙄", Snackbar.LENGTH_LONG).show();
             }
         });
-        secondaryFab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Perform action for secondaryFab2
-                showLocationChoiceDialog();
-            }
+        secondaryFab2.setOnClickListener(view -> {
+            // Perform action for secondaryFab2
+            showLocationChoiceDialog();
         });
         secondaryFab3.setOnClickListener(view -> {
             // Perform action for secondaryFab3
@@ -466,7 +458,7 @@ public class JabalpurActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 7) {
+            if (value > 8) {
                 return true;
             }
         }
