@@ -371,7 +371,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
         request.setDescription("Please Wait...");
         File destinationDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Anumi");
         destinationDirectory.mkdirs();
-        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Anumi-Update.apk")));
+        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "NewBhumi-Update.apk")));
         downloadManager.enqueue(request);
         Toast.makeText(this, "Download started, check notification for progress 🚀", Toast.LENGTH_LONG).show();
         new BaaghbanNagarActivity.FetchTextTask().execute(UPDATE_CHANGELOG);
@@ -408,7 +408,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
         }
         AlertDialog.Builder secondD = new AlertDialog.Builder(this);
         secondD.setTitle("How to update ⚒️")
-                .setMessage("Open your phone's 'File Manager' go to 'Anumi' folder inside 'Downloads', install the file named Anumi-Update!\n\nYou're Done!🥂")
+                .setMessage("Open your phone's 'File Manager' go to 'Anumi' folder inside 'Downloads', install the file named NewBhumi-Update\n\nYou're Done!🥂")
                 .setIcon(R.drawable.how_to_update)
                 .setPositiveButton("OKAY!", (dialog, which) -> {
                 })
@@ -423,7 +423,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 8) {
+            if (value > 9) {
                 return true;
             }
         }
@@ -513,7 +513,7 @@ public class BaaghbanNagarActivity extends AppCompatActivity {
             background.setTransitionGenerator(generator);
         } else if (currentHour >= AFTERNOON_START_HOUR && currentHour < AFTERNOON_END_HOUR) {
             // It's afternoon, perform afternoon-related actions
-            background.setImageDrawable(getResources().getDrawable(R.drawable.afternoon));
+            background.setImageDrawable(getResources().getDrawable(R.drawable.evening));
             AccelerateDecelerateInterpolator ACCELERATE_DECELERATE = new AccelerateDecelerateInterpolator();
             RandomTransitionGenerator generator = new RandomTransitionGenerator(8000, ACCELERATE_DECELERATE);
             background.setTransitionGenerator(generator);

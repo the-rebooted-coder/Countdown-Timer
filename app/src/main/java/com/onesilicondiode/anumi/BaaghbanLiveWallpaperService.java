@@ -26,23 +26,26 @@ public class BaaghbanLiveWallpaperService extends WallpaperService {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-            if (hour >= 6 && hour < 12) {
+            if (hour >= 6 && hour < 9) {
                 return R.drawable.morning;
-            } else if (hour >= 12 && hour < 17) {
+            } else if (hour >= 10 && hour < 12) {
                 return R.drawable.day;
+            } else if (hour >= 12 && hour < 15) {
+                return R.drawable.day;
+            } else if (hour >= 15 && hour < 17) {
+                return R.drawable.morning; // Replace with your afternoon image resource
             } else if (hour >= 17 && hour < 19) {
-                return R.drawable.dusk; // Replace with your afternoon image resource
-            } else if (hour >= 19 && hour < 22) {
-                return R.drawable.evening;
+                return R.drawable.evening; // Replace with your afternoon image resource
+            } else if (hour == 19) {
+                return R.drawable.dusk;
+            } else if (hour == 20) {
+                return R.drawable.prior_night;
+            } else if (hour >= 21 && hour < 23) {
+                return R.drawable.extra_night;
             } else {
                 return R.drawable.night; // Replace with your night image resource
             }
-        }        private final Runnable drawRunner = new Runnable() {
-            @Override
-            public void run() {
-                draw();
-            }
-        };
+        }
 
         private void draw() {
             SurfaceHolder holder = getSurfaceHolder();
@@ -74,7 +77,7 @@ public class BaaghbanLiveWallpaperService extends WallpaperService {
             handler.removeCallbacks(drawRunner);
 
             if (visible) {
-                handler.postDelayed(drawRunner, 7200000);
+                handler.postDelayed(drawRunner, 3600000);
             }
         }
 
@@ -98,7 +101,14 @@ public class BaaghbanLiveWallpaperService extends WallpaperService {
         public void onDestroy() {
             super.onDestroy();
             handler.removeCallbacks(drawRunner);
-        }
+        }        private final Runnable drawRunner = new Runnable() {
+            @Override
+            public void run() {
+                draw();
+            }
+        };
+
+
 
 
     }

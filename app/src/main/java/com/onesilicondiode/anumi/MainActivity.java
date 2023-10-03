@@ -613,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
         request.setDescription("Please Wait...");
         File destinationDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Anumi");
         destinationDirectory.mkdirs();
-        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "Bhumi-Update.apk")));
+        request.setDestinationUri(Uri.fromFile(new File(destinationDirectory, "NewBhumi-Update.apk")));
         downloadManager.enqueue(request);
         Toast.makeText(this, "Download started, check notification for progress 🚀", Toast.LENGTH_LONG).show();
         new FetchTextTask().execute(UPDATE_CHANGELOG);
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 8) {
+            if (value > 9) {
                 return true;
             }
         }
