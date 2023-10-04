@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             int value = Integer.parseInt(matcher.group());
-            if (value > 9) {
+            if (value > 10) {
                 return true;
             }
         }

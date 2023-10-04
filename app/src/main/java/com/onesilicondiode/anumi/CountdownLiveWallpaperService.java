@@ -20,11 +20,11 @@ public class CountdownLiveWallpaperService extends WallpaperService {
     }
 
     private class CountdownEngine extends Engine {
-        private static final long DELAY_MILLIS = 1000;
-
+        private static final long DELAY_MILLIS = 57600000;
         private final Handler handler = new Handler();
-        private int currentDay;        private final Runnable drawRunner = () -> draw();
+        private int currentDay;
         private boolean isHappyHomecoming;
+        private final Runnable drawRunner = () -> draw();
         private SharedPreferences prefs;
 
         @Override
@@ -154,6 +154,8 @@ public class CountdownLiveWallpaperService extends WallpaperService {
             drawable.setBounds(left, top, right, bottom);
             drawable.draw(canvas);
         }
+
+
 
 
     }
